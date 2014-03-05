@@ -1,8 +1,14 @@
 ﻿namespace HF_CS_GCS.Communication
 {
-    delegate void DataReceivedEventHandler(byte[] data); 
+    public delegate void DataReceivedEventHandler(byte[] data);
 
-    interface ICommunication
+    public enum CommunicationType
+    {
+        RS232,
+        Wifi
+    }
+
+    public interface ICommunication
     {
         int SendData(byte[] data);
         void Open();

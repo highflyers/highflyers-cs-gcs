@@ -59,6 +59,21 @@ namespace HF_CS_GCS.Communication
             get { return port.IsOpen; }
         }
 
+        public string PortName
+        {
+            get { return port.PortName; }
+        }
+
+        public int BaudRate
+        {
+            get { return port.BaudRate; }
+        }
+
+        static public string[] AvailablePorts()
+        {
+            return SerialPort.GetPortNames();
+        }
+
         public event DataReceivedEventHandler DataReceived;
 
         private void PortOnDataReceived(object sender, SerialDataReceivedEventArgs serialDataReceivedEventArgs)

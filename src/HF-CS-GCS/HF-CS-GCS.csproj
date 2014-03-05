@@ -44,6 +44,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Communication\GUI\ICommunicationControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Communication\GUI\RS232Control.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Communication\GUI\RS232Control.Designer.cs">
+      <DependentUpon>RS232Control.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Communication\GUI\CommunicationControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Communication\GUI\CommunicationControl.Designer.cs">
+      <DependentUpon>CommunicationControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Communication\ICommunication.cs" />
     <Compile Include="Communication\RS232.cs" />
     <Compile Include="GUI\MainWindow.cs">
@@ -54,6 +69,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Communication\GUI\RS232Control.resx">
+      <DependentUpon>RS232Control.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Communication\GUI\CommunicationControl.resx">
+      <DependentUpon>CommunicationControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
