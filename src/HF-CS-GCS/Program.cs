@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using HF_CS_GCS.GUI;
 
 namespace HF_CS_GCS
 {

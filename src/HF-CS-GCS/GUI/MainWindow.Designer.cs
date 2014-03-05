@@ -1,4 +1,4 @@
-﻿namespace HF_CS_GCS
+﻿namespace HF_CS_GCS.GUI
 {
     partial class MainWindow
     {
