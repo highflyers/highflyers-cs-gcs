@@ -16,6 +16,8 @@ namespace HF_CS_GCS.Communication
 
             if (port == null)
                 throw new Exception("Cannot create SerialPort object");
+
+            port.DataReceived += PortOnDataReceived;
         }
 
         public int SendData(byte[] data)
@@ -58,5 +60,18 @@ namespace HF_CS_GCS.Communication
         }
 
         public event DataReceivedEventHandler DataReceived;
+
+        private void PortOnDataReceived(object sender, SerialDataReceivedEventArgs serialDataReceivedEventArgs)
+        {
+            if (!port.IsOpen) 
+                throw new IOException("What?? Data received when port is closed?");
+
+            int count = port.BytesToRead;
+            if (count <= 0) return;
+
+            var receivedData = new byte[count];
+            port.Read(receivedData, 0, count);
+            DataReceived(receivedData);
+        }
     }
 }

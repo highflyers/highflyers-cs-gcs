@@ -7,7 +7,7 @@
         int SendData(byte[] data);
         void Open();
         void Close();
-        bool IsOpen { get; set; }
+        bool IsOpen { get; }
         event DataReceivedEventHandler DataReceived;
     }
 }
