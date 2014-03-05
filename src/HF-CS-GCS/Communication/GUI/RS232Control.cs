@@ -10,6 +10,8 @@ namespace HF_CS_GCS.Communication.GUI
             InitializeComponent();
 
             RescanPorts();
+            
+            baudRateComboBox.SelectedIndex = 0;
         }
 
         public override ICommunication CommunicationObject
@@ -28,7 +30,10 @@ namespace HF_CS_GCS.Communication.GUI
         private void RescanPorts()
         {
             portListComboBox.Items.Clear();
-            portListComboBox.Items.AddRange(RS232.AvailablePorts().Cast<object>().ToArray());    
+            portListComboBox.Items.AddRange(RS232.AvailablePorts().Cast<object>().ToArray());
+            
+            if (portListComboBox.Items.Count > 0)
+                portListComboBox.SelectedIndex = 0;
         }
     }
 }

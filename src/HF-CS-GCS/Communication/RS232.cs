@@ -28,6 +28,10 @@ namespace HF_CS_GCS.Communication
             lock (writeLocker)
             {
                 port.Write(data, 0, data.Length);
+
+                if (DataSent != null)
+                    DataSent(data);
+
                 return port.BytesToWrite;
             }
         }
@@ -75,6 +79,7 @@ namespace HF_CS_GCS.Communication
         }
 
         public event DataReceivedEventHandler DataReceived;
+        public event DataReceivedEventHandler DataSent;
 
         private void PortOnDataReceived(object sender, SerialDataReceivedEventArgs serialDataReceivedEventArgs)
         {
@@ -86,7 +91,9 @@ namespace HF_CS_GCS.Communication
 
             var receivedData = new byte[count];
             port.Read(receivedData, 0, count);
-            DataReceived(receivedData);
+            
+            if (DataReceived != null)
+                DataReceived(receivedData);
         }
     }
 }

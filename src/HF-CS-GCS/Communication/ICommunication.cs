@@ -1,6 +1,7 @@
 ﻿namespace HF_CS_GCS.Communication
 {
     public delegate void DataReceivedEventHandler(byte[] data);
+    public delegate void DataSentEventHandler(byte[] data);
 
     public enum CommunicationType
     {
@@ -15,5 +16,6 @@
         void Close();
         bool IsOpen { get; }
         event DataReceivedEventHandler DataReceived;
+        event DataReceivedEventHandler DataSent;
     }
 }

@@ -57,6 +57,7 @@
             // 
             this.portListComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.portListComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.portListComboBox.FormattingEnabled = true;
             this.portListComboBox.Location = new System.Drawing.Point(38, 7);
             this.portListComboBox.Name = "portListComboBox";
@@ -67,7 +68,11 @@
             // 
             this.baudRateComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.baudRateComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.baudRateComboBox.FormattingEnabled = true;
+            this.baudRateComboBox.Items.AddRange(new object[] {
+            "4800",
+            "9600"});
             this.baudRateComboBox.Location = new System.Drawing.Point(65, 43);
             this.baudRateComboBox.Name = "baudRateComboBox";
             this.baudRateComboBox.Size = new System.Drawing.Size(135, 21);

@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Utils.cs" />
     <Compile Include="Communication\GUI\ICommunicationControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -74,6 +75,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Communication\GUI\CommunicationControl.resx">
       <DependentUpon>CommunicationControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\MainWindow.resx">
+      <DependentUpon>MainWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -31,14 +31,30 @@ namespace HF_CS_GCS.Communication.GUI
             if (communication == null || !communication.IsOpen)
             {
                 communication = communicationCtrl.CommunicationObject;
+                communication.DataReceived += CommunicationOnDataReceived;
+                communication.DataSent += CommunicationOnDataSent;
                 communication.Open();
                 openCloseButton.Text = @"Close connection";
             }
             else
             {
                 communication.Close();
+                communication.DataReceived -= CommunicationOnDataReceived;
+                communication.DataSent -= CommunicationOnDataSent;
                 openCloseButton.Text = @"Open connection";
             }
+        }
+
+        private void CommunicationOnDataSent(byte[] data)
+        {
+            Utils.InvokeOrDie(receivedDatarichTextBox,
+                () => { sentDataRichTextBox.Text += System.Text.Encoding.Default.GetString(data); });
+        }
+
+        private void CommunicationOnDataReceived(byte[] data)
+        {
+            Utils.InvokeOrDie(receivedDatarichTextBox,
+                () => { receivedDatarichTextBox.Text += System.Text.Encoding.Default.GetString(data); });
         }
     }
 }
