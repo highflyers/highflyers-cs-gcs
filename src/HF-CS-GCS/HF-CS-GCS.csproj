@@ -46,10 +46,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Protocol\FrameBuilder.cs" />
-    <Compile Include="Protocol\Frames\TelemetryFrame.cs" />
-    <Compile Include="Protocol\Parser.cs" />
-    <Compile Include="Protocol\Utils.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="Communication\GUI\ICommunicationControl.cs">
       <SubType>UserControl</SubType>
@@ -108,7 +104,12 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\..\highflyers-protocol\src\csharp\highflyers-protocol.csproj">
+      <Project>{ebb700ad-54c4-4aee-90b4-a6c074617999}</Project>
+      <Name>highflyers-protocol</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
