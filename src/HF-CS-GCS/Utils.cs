@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace HF_CS_GCS
+namespace HighFlyers.CsGCS
 {
     class Utils
     {

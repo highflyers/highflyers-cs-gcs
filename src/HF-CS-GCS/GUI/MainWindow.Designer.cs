@@ -1,4 +1,4 @@
-﻿namespace HF_CS_GCS.GUI
+﻿namespace HighFlyers.CsGCS.GUI
 {
     partial class MainWindow
     {

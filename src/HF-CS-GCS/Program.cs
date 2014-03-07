@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Windows.Forms;
-using HF_CS_GCS.GUI;
+using HighFlyers.CsGCS.GUI;
 
-namespace HF_CS_GCS
+namespace HighFlyers.CsGCS
 {
     static class Program
     {

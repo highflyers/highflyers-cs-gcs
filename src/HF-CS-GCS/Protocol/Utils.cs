@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Data;
 
-namespace HF_CS_GCS.Protocol
+namespace HighFlyers.CsGCS.Protocol
 {
     class Utils
     {

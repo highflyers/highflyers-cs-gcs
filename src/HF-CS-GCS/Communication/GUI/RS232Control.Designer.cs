@@ -1,4 +1,4 @@
-﻿namespace HF_CS_GCS.Communication.GUI
+﻿namespace HighFlyers.CsGCS.Communication.GUI
 {
     partial class RS232Control
     {

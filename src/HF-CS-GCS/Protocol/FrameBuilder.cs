@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using HF_CS_GCS.Protocol.Frames;
+using HighFlyers.CsGCS.Protocol.Frames;
 
-namespace HF_CS_GCS.Protocol
+namespace HighFlyers.CsGCS.Protocol
 {
     enum FrameType
     {

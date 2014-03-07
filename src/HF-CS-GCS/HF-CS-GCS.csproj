@@ -7,7 +7,7 @@
     <ProjectGuid>{79AD15DD-D0AB-4447-9AA9-E73B8312C87E}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>HF_CS_GCS</RootNamespace>
+    <RootNamespace>HighFlyers.CsGCS</RootNamespace>
     <AssemblyName>HF-CS-GCS</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -93,6 +93,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

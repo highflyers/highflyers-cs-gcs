@@ -3,7 +3,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace HF_CS_GCS.Protocol.Frames
+namespace HighFlyers.CsGCS.Protocol.Frames
 {
     class TelemetryStruct : FrameStruct
     {

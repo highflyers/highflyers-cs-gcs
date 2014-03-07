@@ -1,4 +1,4 @@
-﻿namespace HF_CS_GCS.Communication
+﻿namespace HighFlyers.CsGCS.Communication
 {
     public delegate void DataReceivedEventHandler(byte[] data);
     public delegate void DataSentEventHandler(byte[] data);

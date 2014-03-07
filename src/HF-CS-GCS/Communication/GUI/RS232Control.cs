@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace HF_CS_GCS.Communication.GUI
+namespace HighFlyers.CsGCS.Communication.GUI
 {
     public partial class RS232Control : ACommunicationControl
     {

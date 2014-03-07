@@ -1,8 +1,8 @@
 ﻿using System.Windows.Forms;
-using HF_CS_GCS.Communication;
-using HF_CS_GCS.Communication.GUI;
+using HighFlyers.CsGCS.Communication;
+using HighFlyers.CsGCS.Communication.GUI;
 
-namespace HF_CS_GCS.GUI
+namespace HighFlyers.CsGCS.GUI
 {
     public partial class MainWindow : Form
     {

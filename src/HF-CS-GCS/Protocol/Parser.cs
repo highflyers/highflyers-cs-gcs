@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 
-namespace HF_CS_GCS.Protocol
+namespace HighFlyers.CsGCS.Protocol
 {
     class FrameParsedArgs : EventArgs
     {

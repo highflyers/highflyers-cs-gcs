@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.IO;
 using System.IO.Ports;
 
-namespace HF_CS_GCS.Communication
+namespace HighFlyers.CsGCS.Communication
 {
     class RS232 : ICommunication
     {

@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace HF_CS_GCS.Communication.GUI
+namespace HighFlyers.CsGCS.Communication.GUI
 {
     public abstract class ACommunicationControl : UserControl
     {
