@@ -14,7 +14,7 @@ namespace HighFlyers.CsGCS.Communication.GUI
             baudRateComboBox.SelectedIndex = 0;
         }
 
-        public override ICommunication CommunicationObject
+        public override Communication CommunicationObject
         {
             get
             {

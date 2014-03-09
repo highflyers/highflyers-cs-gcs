@@ -5,7 +5,7 @@ namespace HighFlyers.CsGCS.Communication.GUI
 {
     public partial class CommunicationControl : UserControl
     {
-        private ICommunication communication;
+        private Communication communication;
         private readonly ACommunicationControl communicationCtrl;
 
         public CommunicationControl(CommunicationType type)

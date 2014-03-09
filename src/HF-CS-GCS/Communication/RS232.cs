@@ -5,7 +5,7 @@ using System.IO.Ports;
 
 namespace HighFlyers.CsGCS.Communication
 {
-    class RS232 : ICommunication
+    class RS232 : Communication
     {
         private readonly SerialPort port;
         private readonly object writeLocker = new object();
@@ -20,7 +20,7 @@ namespace HighFlyers.CsGCS.Communication
             port.DataReceived += PortOnDataReceived;
         }
 
-        public int SendData(byte[] data)
+        public override int SendData(byte[] data)
         {
             if (!port.IsOpen)
                 throw new IOException("Cannot send data: port is closed");
@@ -28,15 +28,13 @@ namespace HighFlyers.CsGCS.Communication
             lock (writeLocker)
             {
                 port.Write(data, 0, data.Length);
-
-                if (DataSent != null)
-                    DataSent(data);
+                OnDataSent(data);
 
                 return port.BytesToWrite;
             }
         }
 
-        public void Open()
+        public override void Open()
         {
             if (IsOpen)
                 throw new WarningException("Port is already opened");
@@ -47,7 +45,7 @@ namespace HighFlyers.CsGCS.Communication
                 throw new IOException("Cannot open port");
         }
 
-        public void Close()
+        public override void Close()
         {
             if (!IsOpen)
                 throw new WarningException("Port is already closed");
@@ -58,7 +56,7 @@ namespace HighFlyers.CsGCS.Communication
                 throw new IOException("Cannot close port");
         }
 
-        public bool IsOpen
+        public override bool IsOpen
         {
             get { return port.IsOpen; }
         }
@@ -78,9 +76,6 @@ namespace HighFlyers.CsGCS.Communication
             return SerialPort.GetPortNames();
         }
 
-        public event DataReceivedEventHandler DataReceived;
-        public event DataReceivedEventHandler DataSent;
-
         private void PortOnDataReceived(object sender, SerialDataReceivedEventArgs serialDataReceivedEventArgs)
         {
             if (!port.IsOpen) 
@@ -91,9 +86,7 @@ namespace HighFlyers.CsGCS.Communication
 
             var receivedData = new byte[count];
             port.Read(receivedData, 0, count);
-            
-            if (DataReceived != null)
-                DataReceived(receivedData);
+            OnDataReceived(receivedData);
         }
     }
 }
