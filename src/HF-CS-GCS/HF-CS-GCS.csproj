@@ -105,7 +105,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\highflyers-protocol\src\csharp\highflyers-protocol.csproj">
+    <ProjectReference Include="..\..\highflyers-protocol\src\csharp\highflyers-protocol\highflyers-protocol.csproj">
       <Project>{ebb700ad-54c4-4aee-90b4-a6c074617999}</Project>
       <Name>highflyers-protocol</Name>
     </ProjectReference>
