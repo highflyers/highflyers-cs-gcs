@@ -139,7 +139,7 @@
         #endregion
 
         private System.Windows.Forms.Button openCloseButton;
-        private System.Windows.Forms.Panel configConnectionPanel;
+        protected System.Windows.Forms.Panel configConnectionPanel;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.RichTextBox receivedDatarichTextBox;
         private System.Windows.Forms.RichTextBox sentDataRichTextBox;

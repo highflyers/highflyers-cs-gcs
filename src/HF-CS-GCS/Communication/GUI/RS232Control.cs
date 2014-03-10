@@ -3,22 +3,25 @@ using System.Linq;
 
 namespace HighFlyers.CsGCS.Communication.GUI
 {
-    public partial class RS232Control : ACommunicationControl
+    public partial class RS232Control : CommunicationControl
     {
-        public RS232Control()
+        public RS232Control(Communication communication) : base(communication)
         {
             InitializeComponent();
 
             RescanPorts();
-            
             baudRateComboBox.SelectedIndex = 0;
+            configConnectionPanel.Controls.Add(mainPanel);
         }
 
-        public override Communication CommunicationObject
+        protected override void UpdateModel()
         {
-            get
+            var rs232Com = Communication as RS232;
+
+            if (rs232Com != null)
             {
-                return new RS232(portListComboBox.SelectedItem.ToString(), Convert.ToInt32(baudRateComboBox.SelectedItem));
+                rs232Com.BaudRate = Convert.ToInt32(baudRateComboBox.SelectedItem);
+                rs232Com.PortName = portListComboBox.SelectedItem.ToString();
             }
         }
 

@@ -3,44 +3,33 @@ using System.Windows.Forms;
 
 namespace HighFlyers.CsGCS.Communication.GUI
 {
-    public partial class CommunicationControl : UserControl
+    public abstract partial class CommunicationControl : UserControl
     {
-        private Communication communication;
-        private readonly ACommunicationControl communicationCtrl;
+        protected Communication Communication;
 
-        public CommunicationControl(CommunicationType type)
+        protected CommunicationControl(Communication communication)
         {
             InitializeComponent();
-
-            switch (type)
-            {
-                case CommunicationType.RS232:
-                    communicationCtrl = new RS232Control();
-                    break;
-                case CommunicationType.Wifi:
-                    throw new NotImplementedException();
-                default:
-                    throw new Exception("Unknow connection type: " + type);
-            }
-
-            configConnectionPanel.Controls.Add(communicationCtrl);
+            Communication = communication;
         }
+
+        protected abstract void UpdateModel();
 
         private void openCloseButton_Click(object sender, EventArgs e)
         {
-            if (communication == null || !communication.IsOpen)
+            if (!Communication.IsOpen)
             {
-                communication = communicationCtrl.CommunicationObject;
-                communication.DataReceived += CommunicationOnDataReceived;
-                communication.DataSent += CommunicationOnDataSent;
-                communication.Open();
+                UpdateModel();
+                Communication.DataReceived += CommunicationOnDataReceived;
+                Communication.DataSent += CommunicationOnDataSent;
+                Communication.Open();
                 openCloseButton.Text = @"Close connection";
             }
             else
             {
-                communication.Close();
-                communication.DataReceived -= CommunicationOnDataReceived;
-                communication.DataSent -= CommunicationOnDataSent;
+                Communication.Close();
+                Communication.DataReceived -= CommunicationOnDataReceived;
+                Communication.DataSent -= CommunicationOnDataSent;
                 openCloseButton.Text = @"Open connection";
             }
         }

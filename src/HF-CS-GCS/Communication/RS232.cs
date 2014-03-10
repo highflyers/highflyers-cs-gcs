@@ -10,9 +10,11 @@ namespace HighFlyers.CsGCS.Communication
         private readonly SerialPort port;
         private readonly object writeLocker = new object();
 
-        public RS232(string portName, int baudRate = 9600, Parity parity = Parity.None, int dataBits = 8, StopBits stopBits = StopBits.One)
+        public RS232(string portName = null, int baudRate = 9600, Parity parity = Parity.None, int dataBits = 8, StopBits stopBits = StopBits.One)
         {
-            port = new SerialPort(portName, baudRate, parity, dataBits, stopBits);
+            port = string.IsNullOrEmpty(portName)
+                ? new SerialPort()
+                : new SerialPort(portName, baudRate, parity, dataBits, stopBits);
 
             if (port == null)
                 throw new Exception("Cannot create SerialPort object");
@@ -64,11 +66,13 @@ namespace HighFlyers.CsGCS.Communication
         public string PortName
         {
             get { return port.PortName; }
+            set { port.PortName = value; }
         }
 
         public int BaudRate
         {
             get { return port.BaudRate; }
+            set { port.BaudRate = value; }
         }
 
         static public string[] AvailablePorts()

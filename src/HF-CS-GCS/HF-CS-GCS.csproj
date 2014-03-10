@@ -46,10 +46,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Communication\CommunicationFactory.cs" />
     <Compile Include="Utils.cs" />
-    <Compile Include="Communication\GUI\ICommunicationControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
     <Compile Include="Communication\GUI\RS232Control.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -62,7 +60,7 @@
     <Compile Include="Communication\GUI\CommunicationControl.Designer.cs">
       <DependentUpon>CommunicationControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Communication\ICommunication.cs" />
+    <Compile Include="Communication\Communication.cs" />
     <Compile Include="Communication\RS232.cs" />
     <Compile Include="GUI\MainWindow.cs">
       <SubType>Form</SubType>
