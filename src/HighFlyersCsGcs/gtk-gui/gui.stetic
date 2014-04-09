@@ -8,7 +8,7 @@
     <widget-library name="glade-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
     <widget-library name="../bin/Debug/HighFlyersCsGcs.exe" internal="true" />
   </import>
-  <widget class="Gtk.Window" id="MainWindow" design-size="400 451">
+  <widget class="Gtk.Window" id="MainWindow" design-size="656 451">
     <property name="MemberName" />
     <property name="Title" translatable="yes">MainWindow</property>
     <property name="WindowPosition">Center</property>
@@ -23,106 +23,121 @@
             <property name="CanFocus">True</property>
             <property name="CurrentPage">0</property>
             <child>
-              <widget class="Gtk.VBox" id="vbox7">
+              <widget class="Gtk.HPaned" id="hpaned3">
                 <property name="MemberName" />
-                <property name="Spacing">6</property>
+                <property name="CanFocus">True</property>
+                <property name="Position">338</property>
                 <child>
-                  <widget class="HighFlyers.GCS.Communication" id="communicationWidget">
+                  <widget class="Gtk.VBox" id="vbox7">
                     <property name="MemberName" />
-                    <property name="Events">ButtonPressMask</property>
-                  </widget>
-                  <packing>
-                    <property name="Position">0</property>
-                    <property name="AutoSize">True</property>
-                    <property name="Expand">False</property>
-                    <property name="Fill">False</property>
-                  </packing>
-                </child>
-                <child>
-                  <widget class="Gtk.HPaned" id="hpaned1">
-                    <property name="MemberName" />
-                    <property name="CanFocus">True</property>
-                    <property name="Position">203</property>
+                    <property name="Spacing">6</property>
                     <child>
-                      <widget class="Gtk.VBox" id="vbox5">
+                      <widget class="HighFlyers.GCS.Communication" id="communicationWidget">
                         <property name="MemberName" />
-                        <property name="Spacing">6</property>
-                        <child>
-                          <widget class="Gtk.Label" id="label4">
-                            <property name="MemberName" />
-                            <property name="LabelProp" translatable="yes">Received data:</property>
-                          </widget>
-                          <packing>
-                            <property name="Position">0</property>
-                            <property name="AutoSize">True</property>
-                            <property name="Expand">False</property>
-                            <property name="Fill">False</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <widget class="Gtk.ScrolledWindow" id="GtkScrolledWindow">
-                            <property name="MemberName" />
-                            <property name="ShadowType">In</property>
-                            <child>
-                              <widget class="Gtk.TextView" id="receivedDataTextView">
-                                <property name="MemberName" />
-                                <property name="CanFocus">True</property>
-                                <property name="ShowScrollbars">True</property>
-                                <property name="Text" translatable="yes" />
-                              </widget>
-                            </child>
-                          </widget>
-                          <packing>
-                            <property name="Position">1</property>
-                            <property name="AutoSize">True</property>
-                          </packing>
-                        </child>
+                        <property name="Events">ButtonPressMask</property>
                       </widget>
                       <packing>
-                        <property name="Resize">False</property>
+                        <property name="Position">0</property>
+                        <property name="AutoSize">True</property>
+                        <property name="Expand">False</property>
+                        <property name="Fill">False</property>
                       </packing>
                     </child>
                     <child>
-                      <widget class="Gtk.VBox" id="vbox6">
+                      <widget class="Gtk.HPaned" id="hpaned1">
                         <property name="MemberName" />
-                        <property name="Spacing">6</property>
+                        <property name="CanFocus">True</property>
+                        <property name="Position">189</property>
                         <child>
-                          <widget class="Gtk.Label" id="label5">
+                          <widget class="Gtk.VBox" id="vbox5">
                             <property name="MemberName" />
-                            <property name="LabelProp" translatable="yes">Sent data:</property>
-                          </widget>
-                          <packing>
-                            <property name="Position">0</property>
-                            <property name="AutoSize">True</property>
-                            <property name="Expand">False</property>
-                            <property name="Fill">False</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <widget class="Gtk.ScrolledWindow" id="GtkScrolledWindow1">
-                            <property name="MemberName" />
-                            <property name="ShadowType">In</property>
+                            <property name="Spacing">6</property>
                             <child>
-                              <widget class="Gtk.TextView" id="sentDataTextView">
+                              <widget class="Gtk.Label" id="label4">
                                 <property name="MemberName" />
-                                <property name="CanFocus">True</property>
-                                <property name="ShowScrollbars">True</property>
-                                <property name="Text" translatable="yes" />
+                                <property name="LabelProp" translatable="yes">Received data:</property>
                               </widget>
+                              <packing>
+                                <property name="Position">0</property>
+                                <property name="AutoSize">True</property>
+                                <property name="Expand">False</property>
+                                <property name="Fill">False</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <widget class="Gtk.ScrolledWindow" id="GtkScrolledWindow">
+                                <property name="MemberName" />
+                                <property name="ShadowType">In</property>
+                                <child>
+                                  <widget class="Gtk.TextView" id="receivedDataTextView">
+                                    <property name="MemberName" />
+                                    <property name="CanFocus">True</property>
+                                    <property name="ShowScrollbars">True</property>
+                                    <property name="Text" translatable="yes" />
+                                  </widget>
+                                </child>
+                              </widget>
+                              <packing>
+                                <property name="Position">1</property>
+                                <property name="AutoSize">True</property>
+                              </packing>
                             </child>
                           </widget>
                           <packing>
-                            <property name="Position">1</property>
-                            <property name="AutoSize">True</property>
+                            <property name="Resize">False</property>
                           </packing>
                         </child>
+                        <child>
+                          <widget class="Gtk.VBox" id="vbox6">
+                            <property name="MemberName" />
+                            <property name="Spacing">6</property>
+                            <child>
+                              <widget class="Gtk.Label" id="label5">
+                                <property name="MemberName" />
+                                <property name="LabelProp" translatable="yes">Sent data:</property>
+                              </widget>
+                              <packing>
+                                <property name="Position">0</property>
+                                <property name="AutoSize">True</property>
+                                <property name="Expand">False</property>
+                                <property name="Fill">False</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <widget class="Gtk.ScrolledWindow" id="GtkScrolledWindow1">
+                                <property name="MemberName" />
+                                <property name="ShadowType">In</property>
+                                <child>
+                                  <widget class="Gtk.TextView" id="sentDataTextView">
+                                    <property name="MemberName" />
+                                    <property name="CanFocus">True</property>
+                                    <property name="ShowScrollbars">True</property>
+                                    <property name="Text" translatable="yes" />
+                                  </widget>
+                                </child>
+                              </widget>
+                              <packing>
+                                <property name="Position">1</property>
+                                <property name="AutoSize">True</property>
+                              </packing>
+                            </child>
+                          </widget>
+                        </child>
                       </widget>
+                      <packing>
+                        <property name="Position">1</property>
+                        <property name="AutoSize">True</property>
+                      </packing>
                     </child>
                   </widget>
                   <packing>
-                    <property name="Position">1</property>
-                    <property name="AutoSize">True</property>
+                    <property name="Resize">False</property>
                   </packing>
+                </child>
+                <child>
+                  <widget class="Gtk.Image" id="image1">
+                    <property name="MemberName" />
+                  </widget>
                 </child>
               </widget>
             </child>

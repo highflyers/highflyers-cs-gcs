@@ -4,6 +4,7 @@ public partial class MainWindow
 {
 	private global::Gtk.VBox vbox1;
 	private global::Gtk.Notebook notebook1;
+	private global::Gtk.HPaned hpaned3;
 	private global::Gtk.VBox vbox7;
 	private global::HighFlyers.GCS.Communication communicationWidget;
 	private global::Gtk.HPaned hpaned1;
@@ -15,6 +16,7 @@ public partial class MainWindow
 	private global::Gtk.Label label5;
 	private global::Gtk.ScrolledWindow GtkScrolledWindow1;
 	private global::Gtk.TextView sentDataTextView;
+	private global::Gtk.Image image1;
 	private global::Gtk.Label label3;
 
 	protected virtual void Build ()
@@ -34,13 +36,18 @@ public partial class MainWindow
 		this.notebook1.Name = "notebook1";
 		this.notebook1.CurrentPage = 0;
 		// Container child notebook1.Gtk.Notebook+NotebookChild
+		this.hpaned3 = new global::Gtk.HPaned ();
+		this.hpaned3.CanFocus = true;
+		this.hpaned3.Name = "hpaned3";
+		this.hpaned3.Position = 338;
+		// Container child hpaned3.Gtk.Paned+PanedChild
 		this.vbox7 = new global::Gtk.VBox ();
 		this.vbox7.Name = "vbox7";
 		this.vbox7.Spacing = 6;
 		// Container child vbox7.Gtk.Box+BoxChild
 		this.communicationWidget = new global::HighFlyers.GCS.Communication ();
 		this.communicationWidget.Events = ((global::Gdk.EventMask)(256));
-		this.communicationWidget.Name = "communication1";
+		this.communicationWidget.Name = "communicationWidget";
 		this.vbox7.Add (this.communicationWidget);
 		global::Gtk.Box.BoxChild w1 = ((global::Gtk.Box.BoxChild)(this.vbox7 [this.communicationWidget]));
 		w1.Position = 0;
@@ -50,7 +57,7 @@ public partial class MainWindow
 		this.hpaned1 = new global::Gtk.HPaned ();
 		this.hpaned1.CanFocus = true;
 		this.hpaned1.Name = "hpaned1";
-		this.hpaned1.Position = 203;
+		this.hpaned1.Position = 189;
 		// Container child hpaned1.Gtk.Paned+PanedChild
 		this.vbox5 = new global::Gtk.VBox ();
 		this.vbox5.Name = "vbox5";
@@ -108,21 +115,28 @@ public partial class MainWindow
 		this.vbox7.Add (this.hpaned1);
 		global::Gtk.Box.BoxChild w10 = ((global::Gtk.Box.BoxChild)(this.vbox7 [this.hpaned1]));
 		w10.Position = 1;
-		this.notebook1.Add (this.vbox7);
+		this.hpaned3.Add (this.vbox7);
+		global::Gtk.Paned.PanedChild w11 = ((global::Gtk.Paned.PanedChild)(this.hpaned3 [this.vbox7]));
+		w11.Resize = false;
+		// Container child hpaned3.Gtk.Paned+PanedChild
+		this.image1 = new global::Gtk.Image ();
+		this.image1.Name = "image1";
+		this.hpaned3.Add (this.image1);
+		this.notebook1.Add (this.hpaned3);
 		// Notebook tab
 		this.label3 = new global::Gtk.Label ();
 		this.label3.Name = "label3";
-		this.label3.LabelProp = global::Mono.Unix.Catalog.GetString ("page1");
-		this.notebook1.SetTabLabel (this.vbox7, this.label3);
+		this.label3.LabelProp = global::Mono.Unix.Catalog.GetString ("Devices");
+		this.notebook1.SetTabLabel (this.hpaned3, this.label3);
 		this.label3.ShowAll ();
 		this.vbox1.Add (this.notebook1);
-		global::Gtk.Box.BoxChild w12 = ((global::Gtk.Box.BoxChild)(this.vbox1 [this.notebook1]));
-		w12.Position = 0;
+		global::Gtk.Box.BoxChild w14 = ((global::Gtk.Box.BoxChild)(this.vbox1 [this.notebook1]));
+		w14.Position = 0;
 		this.Add (this.vbox1);
 		if ((this.Child != null)) {
 			this.Child.ShowAll ();
 		}
-		this.DefaultWidth = 400;
+		this.DefaultWidth = 656;
 		this.DefaultHeight = 451;
 		this.Show ();
 		this.DeleteEvent += new global::Gtk.DeleteEventHandler (this.OnDeleteEvent);
