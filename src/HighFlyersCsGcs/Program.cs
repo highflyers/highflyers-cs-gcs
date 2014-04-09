@@ -1,7 +1,6 @@
-using System;
 using Gtk;
 
-namespace HighFlyersCsGcs
+namespace HighFlyers.GCS
 {
 	class MainClass
 	{
