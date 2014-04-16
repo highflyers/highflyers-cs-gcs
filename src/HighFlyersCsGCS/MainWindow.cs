@@ -2,30 +2,38 @@ using System;
 using Gtk;
 using UI = Gtk.Builder.ObjectAttribute;
 
-public partial class MainWindow: Gtk.Window
+namespace HighFlyers.GCS
 {
-
-	[UI] Gtk.Button button1;
-	[UI] Gtk.Label label1;
-	int clickedTimes;
-
-	public MainWindow (Builder builder, IntPtr handle): base (handle)
+	public partial class MainWindow: Gtk.Window
 	{
-		builder.Autoconnect (this);
-		DeleteEvent += OnDeleteEvent;
 
-		button1.Clicked += onButtonClick;
-	}
+		[UI] Gtk.Button start_player;
+		[UI] Gtk.Button stop_player;
+		[UI] Gtk.Box box1;
+		VideoWidget video;
 
-	protected void onButtonClick (object sender, EventArgs a)
-	{
-		clickedTimes++;
-		label1.Text = string.Format ("Hello World! This button has been clicked {0} time(s).", clickedTimes);
-	}
+		public MainWindow (Builder builder, IntPtr handle): base (handle)
+		{
+			builder.Autoconnect (this);
+			DeleteEvent += OnDeleteEvent;
 
-	protected void OnDeleteEvent (object sender, DeleteEventArgs a)
-	{
-		Application.Quit ();
-		a.RetVal = true;
+			start_player.Clicked += onButtonClick;
+			stop_player.Clicked += (sender, e) => video.Stop ();
+
+			video = new VideoWidget ();
+			box1.Add (video);
+			video.Show ();
+		}
+
+		protected void onButtonClick (object sender, EventArgs a)
+		{
+			video.Start ();
+		}
+
+		protected void OnDeleteEvent (object sender, DeleteEventArgs a)
+		{
+			Application.Quit ();
+			a.RetVal = true;
+		}
 	}
 }

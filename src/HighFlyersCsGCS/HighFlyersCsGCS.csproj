@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{2AEF581B-AC28-42BC-9B85-40E2AD2385D1}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>HighFlyersCsGCS</RootNamespace>
+    <RootNamespace>HighFlyers.GCS</RootNamespace>
     <AssemblyName>HighFlyersCsGCS</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -52,11 +52,15 @@
       <SpecificVersion>False</SpecificVersion>
       <Package>gtk-sharp-3.0</Package>
     </Reference>
+    <Reference Include="gstreamer-sharp, Version=0.99.0.0, Culture=neutral, PublicKeyToken=5cbf79803e97ff61">
+      <Private>False</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="MainWindow.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="VideoWidget.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="interfaces\MainWindow.ui" />
