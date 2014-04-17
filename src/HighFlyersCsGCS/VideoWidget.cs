@@ -12,7 +12,13 @@ namespace HighFlyers.GCS
 		DrawingArea drawing_area;
 		Pipeline pipeline;
 
-		public VideoWidget () : base ()
+		public enum PipelineType
+		{
+			Rtp,
+			Test
+		}
+
+		public VideoWidget (PipelineType pipelineType) : base ()
 		{
 			Frame frame = new Frame ();
 			drawing_area = new DrawingArea ();
@@ -24,10 +30,20 @@ namespace HighFlyers.GCS
 			DeleteEvent += OnDeleteEvent;
 			frame.ShowAll ();
 
-			BuildPipeline ();
+			InitPipeline ();
+			switch (pipelineType) {
+			case PipelineType.Rtp:
+				BuildRtpPipeline ();
+				break;
+			case PipelineType.Test:
+				BuildTestPipeline ();
+				break;
+			default:
+				throw new NotImplementedException ("Not implemented pipeline type: " + pipelineType);
+			}
 		}
 
-		void BuildPipeline ()
+		void InitPipeline ()
 		{
 			pipeline = new Pipeline ();
 			pipeline.Bus.EnableSyncMessageEmission ();
@@ -58,9 +74,37 @@ namespace HighFlyers.GCS
 					break;
 				}
 			};
+		}
 
-			var source = ElementFactory.Make ("videotestsrc", "videos");
-			var sink = ElementFactory.Make ("autovideosink", "elemens");
+		void BuildRtpPipeline ()
+		{	
+			Element source = ElementFactory.Make ("udpsrc", "source"),
+			appFilter = ElementFactory.Make ("capsfilter", "appfilter"),
+			jitter = ElementFactory.Make ("rtpjitterbuffer", "jitter"),
+			depay = ElementFactory.Make ("rtph264depay", "depay"),
+			videoFilter = ElementFactory.Make ("capsfilter", "videofilter"),
+			decoder = ElementFactory.Make ("avdec_h264", "decoder"),
+			converter = ElementFactory.Make ("videoconvert", "converter"),
+			sink = ElementFactory.Make ("autovideosink", "sink");
+
+			source ["port"] = 5000;
+			appFilter ["caps"] = "application/x-rtp, payload=96";
+			jitter ["mode"] = 1;
+			jitter ["latency"] = 200;
+			jitter ["drop-on-latency"] = true;
+			videoFilter ["caps"] = "video/x-h-264, width=640, height=480,, framerate=15/1";
+			
+			pipeline.Add (source);pipeline.Add (appFilter); pipeline.Add (jitter);
+			pipeline.Add (depay); pipeline.Add (videoFilter); pipeline.Add (decoder);
+			pipeline.Add (converter); pipeline.Add (sink);
+			source.Link (appFilter); appFilter.Link (jitter); jitter.Link (depay); depay.Link (videoFilter);
+			videoFilter.Link (decoder);decoder.Link (converter); converter.Link (sink);
+		}
+
+		void BuildTestPipeline ()
+		{
+			Element source = ElementFactory.Make ("videotestsrc", "videos"),
+			sink = ElementFactory.Make ("autovideosink", "elemens");
 			pipeline.Add (source);
 			pipeline.Add (sink);
 			source.Link (sink);
@@ -80,7 +124,7 @@ namespace HighFlyers.GCS
 
 			if (sret == StateChangeReturn.Async) {
 				State state, pending;
-				sret = pipeline.GetState (out state, out pending, Constants.SECOND * 5L);
+				sret = pipeline.GetState (out state, out pending, Constants.SECOND * 15L);
 			}
 
 			if (sret == StateChangeReturn.Success) {

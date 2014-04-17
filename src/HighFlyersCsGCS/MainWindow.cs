@@ -20,7 +20,7 @@ namespace HighFlyers.GCS
 			start_player.Clicked += onButtonClick;
 			stop_player.Clicked += (sender, e) => video.Stop ();
 
-			video = new VideoWidget ();
+			video = new VideoWidget (VideoWidget.PipelineType.Test);
 			box1.Add (video);
 			video.Show ();
 		}
