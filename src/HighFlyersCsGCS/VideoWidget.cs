@@ -1,4 +1,3 @@
-using GLib;
 using Gtk;
 using System;
 using Gst;
@@ -18,7 +17,7 @@ namespace HighFlyers.GCS
 			Test
 		}
 
-		public VideoWidget (PipelineType pipelineType) : base ()
+		public VideoWidget (PipelineType pipelineType)
 		{
 			Frame frame = new Frame ();
 			drawing_area = new DrawingArea ();
@@ -52,7 +51,7 @@ namespace HighFlyers.GCS
 			pipeline.Bus.SyncMessage += delegate (object bus, SyncMessageArgs sargs) {
 				Gst.Message msg = sargs.Message;
 
-				if (!Gst.Video.GlobalVideo.IsVideoOverlayPrepareWindowHandleMessage (msg) || !(msg.Src is Element))
+				if (!GlobalVideo.IsVideoOverlayPrepareWindowHandleMessage (msg) || !(msg.Src is Element))
 					return;
 
 				VideoOverlayAdapter adapter = new VideoOverlayAdapter (msg.Src.Handle);
@@ -110,7 +109,7 @@ namespace HighFlyers.GCS
 			source.Link (sink);
 		}
 
-		void OnDeleteEvent (object sender, DeleteEventArgs args)
+		void OnDeleteEvent (object sender, GLib.SignalArgs args)
 		{
 			pipeline.SetState (Gst.State.Null);
 			pipeline.Dispose ();
@@ -118,9 +117,9 @@ namespace HighFlyers.GCS
 			args.RetVal = true;
 		}
 
-		void ChangeStateWithDelay (Gst.State desired_state)
+		void ChangeStateWithDelay (State desiredState)
 		{
-			StateChangeReturn sret = pipeline.SetState (desired_state);
+			StateChangeReturn sret = pipeline.SetState (desiredState);
 
 			if (sret == StateChangeReturn.Async) {
 				State state, pending;
