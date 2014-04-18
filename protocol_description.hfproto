@@ -1,0 +1,15 @@
+enum SampleEnum
+{
+	ENUM_VAL1
+	ENUM_VAL2
+	ENUM_VAL3
+	ENUM_VAL256
+}
+
+struct ExampleStruct
+{
+	int Val1
+	double? Val2
+	byte Val4
+	double Val5
+}
