@@ -9,6 +9,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>HighFlyers.GCS</RootNamespace>
     <AssemblyName>HighFlyersCsGCS</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -71,6 +72,11 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="Map\" />
-    <Folder Include="Map\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\highflyers-protocol\src\csharp\highflyers-protocol\highflyers-protocol.csproj">
+      <Project>{EBB700AD-54C4-4AEE-90B4-A6C074617999}</Project>
+      <Name>highflyers-protocol</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>
