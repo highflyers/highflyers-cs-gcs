@@ -10,7 +10,7 @@ namespace HighFlyers.GCS
 			Application.Init ();
 			Gst.Application.Init ();
 			Builder builder = new Builder (null, "HighFlyers.GCS.interfaces.MainWindow.ui", null);
-			MainWindow win = new MainWindow (builder, builder.GetObject ("window1").Handle);
+			MainWindow win = new MainWindow (builder, builder.GetObject ("main_window").Handle);
 			win.Show ();
 			Application.Run ();
 		}
