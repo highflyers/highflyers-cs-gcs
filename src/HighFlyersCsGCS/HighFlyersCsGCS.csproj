@@ -21,6 +21,11 @@
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
     <PlatformTarget>x86</PlatformTarget>
+    <CustomCommands>
+      <CustomCommands>
+        <Command type="BeforeBuild" command="${ProjectDir}/../../highflyers-protocol/src/csharp/highflyers-protocol-generator/bin/${ProjectConfigName}/highflyers-protocol-generator.exe ${ProjectDir}/Protocol/description.hfproto ${ProjectDir}/Protocol/Frames.cs ${ProjectDir}/Protocol/FrameBuilder.cs" />
+      </CustomCommands>
+    </CustomCommands>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <DebugType>full</DebugType>
@@ -65,6 +70,8 @@
     <Compile Include="Map\MapWidget.cs" />
     <Compile Include="Map\Coordinate.cs" />
     <Compile Include="Map\FileMapWidget.cs" />
+    <Compile Include="Protocol\FrameBuilder.cs" />
+    <Compile Include="Protocol\Frames.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="interfaces\MainWindow.ui" />
@@ -72,11 +79,15 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="Map\" />
+    <Folder Include="Protocol\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\highflyers-protocol\src\csharp\highflyers-protocol\highflyers-protocol.csproj">
       <Project>{EBB700AD-54C4-4AEE-90B4-A6C074617999}</Project>
       <Name>highflyers-protocol</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Protocol\description.hfproto" />
   </ItemGroup>
 </Project>
