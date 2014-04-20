@@ -64,14 +64,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
-    <Compile Include="MainWindow.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VideoWidget.cs" />
-    <Compile Include="Map\MapWidget.cs" />
     <Compile Include="Map\Coordinate.cs" />
-    <Compile Include="Map\FileMapWidget.cs" />
+    <Compile Include="Map\FileMapWidget.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
     <Compile Include="Protocol\FrameBuilder.cs" />
     <Compile Include="Protocol\Frames.cs" />
+    <Compile Include="MainWindow.cs" />
+    <Compile Include="Map\MapWidget.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="interfaces\MainWindow.ui" />
