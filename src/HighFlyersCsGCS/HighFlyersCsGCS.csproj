@@ -86,6 +86,10 @@
       <Project>{EBB700AD-54C4-4AEE-90B4-A6C074617999}</Project>
       <Name>highflyers-protocol</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\highflyers-protocol\src\csharp\highflyers-protocol-generator\highflyers-protocol-generator.csproj">
+      <Project>{180F8274-24C9-417E-9120-C17A0CBEF180}</Project>
+      <Name>highflyers-protocol-generator</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Protocol\description.hfproto" />
