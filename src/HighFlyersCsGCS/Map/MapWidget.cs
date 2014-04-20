@@ -101,6 +101,7 @@ namespace HighFlyers.GCS.Map
 		public abstract void LoadMap (string uri);
 		public abstract void JumpTo(Coordinate coordinate);
 		public abstract Coordinate GetCurrentMapLocation ();
+		public abstract bool PathPointFollowerMode{ get; set; }
 		#endregion Map
 
 		#region Events
