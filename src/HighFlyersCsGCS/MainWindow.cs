@@ -6,9 +6,9 @@ namespace HighFlyers.GCS
 {
 	public partial class MainWindow: Gtk.Window
 	{
-		[UI] Gtk.Button start_player;
-		[UI] Gtk.Button stop_player;
-		[UI] Gtk.Box box1;
+		[UI] Gtk.Paned paned1;
+		[UI] Gtk.Box box2;
+		[UI] Gtk.ToggleButton startStopCameraToggleButton;
 
 		VideoWidget video;
 
@@ -17,12 +17,19 @@ namespace HighFlyers.GCS
 			builder.Autoconnect (this);
 			DeleteEvent += OnDeleteEvent;
 
-			start_player.Clicked += (sender, e) => video.Start ();
-			stop_player.Clicked += (sender, e) => video.Stop ();
+			startStopCameraToggleButton.Toggled += HandleStartStopClicked;
 
 			video = new VideoWidget (VideoWidget.PipelineType.Test);
-			box1.Add (video);
+			box2.Add (video);
 			video.Show ();
+		}
+
+		void HandleStartStopClicked (object sender, EventArgs e)
+		{
+			if (startStopCameraToggleButton.Active)
+				video.Start ();
+			else
+				video.Stop ();
 		}
 
 		protected void OnDeleteEvent (object sender, DeleteEventArgs a)
