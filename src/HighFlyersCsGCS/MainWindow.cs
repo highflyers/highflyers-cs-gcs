@@ -4,13 +4,16 @@ using UI = Gtk.Builder.ObjectAttribute;
 
 namespace HighFlyers.GCS
 {
-	public partial class MainWindow: Gtk.Window
+	public class MainWindow: Gtk.Window
 	{
-		[UI] Gtk.Paned paned1;
 		[UI] Gtk.Box box2;
 		[UI] Gtk.ToggleButton startStopCameraToggleButton;
 
+		Builder builder;
 		VideoWidget video;
+
+		const string settingsFileName = "settings.xml";
+		GLib.KeyFile settings;
 
 		public MainWindow (Builder builder, IntPtr handle): base (handle)
 		{
@@ -22,6 +25,17 @@ namespace HighFlyers.GCS
 			video = new VideoWidget (VideoWidget.PipelineType.Test);
 			box2.Add (video);
 			video.Show ();
+		
+			this.builder = builder;
+
+			settings = (System.IO.File.Exists (settingsFileName)) ? 
+				new GLib.KeyFile (settingsFileName, GLib.KeyFileFlags.KeepComments) :
+				new GLib.KeyFile ();
+		}
+
+		void on_configurationButton_clicked (object sender, EventArgs e)
+		{
+			(builder.GetObject ("configuration_window")as Window).Show ();
 		}
 
 		void HandleStartStopClicked (object sender, EventArgs e)
