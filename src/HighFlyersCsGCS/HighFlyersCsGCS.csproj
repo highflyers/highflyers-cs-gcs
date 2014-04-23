@@ -78,12 +78,15 @@
     <Compile Include="Protocol\Frames.cs" />
     <Compile Include="MainWindow.cs" />
     <Compile Include="Map\MapWidget.cs" />
+    <Compile Include="ConfigurationDialog.cs" />
+    <Compile Include="AppConfiguration.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="interfaces\MainWindow.ui" />
     <EmbeddedResource Include="interfaces\images\russia-map.gif">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
+    <EmbeddedResource Include="interfaces\ConfigurationDialog.ui" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

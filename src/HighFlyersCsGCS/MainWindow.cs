@@ -9,11 +9,7 @@ namespace HighFlyers.GCS
 		[UI] Gtk.Box box2;
 		[UI] Gtk.ToggleButton startStopCameraToggleButton;
 
-		Builder builder;
 		VideoWidget video;
-
-		const string settingsFileName = "settings.xml";
-		GLib.KeyFile settings;
 
 		public MainWindow (Builder builder, IntPtr handle): base (handle)
 		{
@@ -25,17 +21,18 @@ namespace HighFlyers.GCS
 			video = new VideoWidget (VideoWidget.PipelineType.Test);
 			box2.Add (video);
 			video.Show ();
-		
-			this.builder = builder;
 
-			settings = (System.IO.File.Exists (settingsFileName)) ? 
-				new GLib.KeyFile (settingsFileName, GLib.KeyFileFlags.KeepComments) :
-				new GLib.KeyFile ();
 		}
 
 		void on_configurationButton_clicked (object sender, EventArgs e)
 		{
-			(builder.GetObject ("configuration_window")as Window).Show ();
+			try {
+				var builder = new Builder (null, "HighFlyers.GCS.interfaces.ConfigurationDialog.ui", null);
+				var conf = new ConfigurationDialog (builder, builder.GetObject ("configuration_dialog").Handle);
+				conf.Run ();
+			} catch (Exception ex) {
+				Console.WriteLine (ex.Message);
+			}
 		}
 
 		void HandleStartStopClicked (object sender, EventArgs e)
