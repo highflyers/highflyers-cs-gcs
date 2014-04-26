@@ -19,6 +19,8 @@ namespace HighFlyers.GCS
 			startStopCameraToggleButton.Toggled += HandleStartStopClicked;
 
 			video = new VideoWidget ();
+			video.Expand = true;
+
 			box2.Add (video);
 			video.Show ();
 
