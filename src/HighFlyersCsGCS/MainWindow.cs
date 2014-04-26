@@ -18,7 +18,7 @@ namespace HighFlyers.GCS
 
 			startStopCameraToggleButton.Toggled += HandleStartStopClicked;
 
-			video = new VideoWidget (VideoWidget.PipelineType.Test);
+			video = new VideoWidget ();
 			box2.Add (video);
 			video.Show ();
 
@@ -29,7 +29,13 @@ namespace HighFlyers.GCS
 			try {
 				var builder = new Builder (null, "HighFlyers.GCS.interfaces.ConfigurationDialog.ui", null);
 				var conf = new ConfigurationDialog (builder, builder.GetObject ("configuration_dialog").Handle);
-				conf.Run ();
+				if (conf.Run () == (int) ResponseType.Ok) {
+					video.InitPipeline();
+					if (startStopCameraToggleButton.Active) {
+						video.Start ();
+					}
+				}
+
 			} catch (Exception ex) {
 				Console.WriteLine (ex.Message);
 			}
