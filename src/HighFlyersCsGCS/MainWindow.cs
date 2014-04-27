@@ -8,6 +8,7 @@ namespace HighFlyers.GCS
 	{
 		[UI] Gtk.Box box2;
 		[UI] Gtk.ToggleButton startStopCameraToggleButton;
+		[UI] ToggleButton recordCameraToggleButton;
 
 		VideoWidget video;
 
@@ -43,10 +44,21 @@ namespace HighFlyers.GCS
 			}
 		}
 
+		protected void on_recordCameraToggleButton_toggled (object sender, EventArgs e)
+		{
+			if (recordCameraToggleButton.Active) {
+				video.StartRecording ("filename");
+			} else { 
+				video.StopRecording ();
+			}
+		}
+
 		void HandleStartStopClicked (object sender, EventArgs e)
 		{
-			if (startStopCameraToggleButton.Active)
+			if (startStopCameraToggleButton.Active) {
+				video.InitPipeline ();
 				video.Start ();
+			}
 			else
 				video.Stop ();
 		}

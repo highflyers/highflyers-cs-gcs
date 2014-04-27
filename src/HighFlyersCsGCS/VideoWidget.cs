@@ -10,6 +10,8 @@ namespace HighFlyers.GCS
 	{
 		DrawingArea drawing_area;
 		Pipeline pipeline;
+		string rec_filename;
+		bool recorder = false;
 
 		public VideoWidget ()
 		{
@@ -23,7 +25,6 @@ namespace HighFlyers.GCS
 			DeleteEvent += OnDeleteEvent;
 			frame.ShowAll ();
 
-			InitPipeline ();
 		}
 
 		public void InitPipeline ()
@@ -32,12 +33,20 @@ namespace HighFlyers.GCS
 				ChangeStateWithDelay (Gst.State.Null);
 			}
 
-			pipeline = Gst.Parse.Launch (AppConfiguration.Instance.GetString ("Video", "Pipeline")) as Pipeline;
+			string p = AppConfiguration.Instance.GetString ("Video", "Pipeline");
+
+			if (recorder) {
+				int index = p.LastIndexOf (" ! autovideosink", StringComparison.Ordinal);
+				p = p.Remove (index);
+				p += " ! tee name=my_videosink ! queue ! autovideosink my_videosink. ! queue ! avenc_h263 ! avimux ! filesink location=" + rec_filename;
+			}
+
+			pipeline = Parse.Launch (p) as Pipeline;
 			pipeline.Bus.EnableSyncMessageEmission ();
 			pipeline.Bus.AddSignalWatch ();
 
 			pipeline.Bus.SyncMessage += delegate (object bus, SyncMessageArgs sargs) {
-				Gst.Message msg = sargs.Message;
+				Message msg = sargs.Message;
 
 				if (!GlobalVideo.IsVideoOverlayPrepareWindowHandleMessage (msg) || !(msg.Src is Element))
 					return;
@@ -98,6 +107,41 @@ namespace HighFlyers.GCS
 		{
 			ChangeStateWithDelay (Gst.State.Null);
 		}
+
+		public void StartRecording (string filename)
+		{
+			recorder = true;
+			rec_filename = filename;
+
+			if (IsPlaying) {
+				Stop ();
+				InitPipeline ();
+				Start ();
+			}
+		}
+
+		public void StopRecording ()
+		{
+			recorder = false;
+
+			if (IsPlaying) {
+				Stop ();
+				InitPipeline ();
+				Start ();
+			}
+		}
+
+		public bool IsPlaying {
+			get {
+				if (pipeline != null) {
+					Gst.State state, pending;
+					pipeline.GetState (out state, out pending, 0);
+					return state == Gst.State.Playing;
+				}
+				return false;
+			}
+		}
+
 
 		[DllImport ("libgdk-3.so.0") ]
 		static extern uint gdk_x11_window_get_xid (IntPtr handle);

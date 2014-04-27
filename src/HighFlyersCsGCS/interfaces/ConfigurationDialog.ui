@@ -98,7 +98,7 @@
                         <signal name="changed" handler="on_videoSourceComboBox_changed" swapped="no"/>
                         <child internal-child="entry">
                           <object class="GtkEntry" id="combobox-entry">
-                            <property name="can_focus">False</property>
+                            <property name="can_focus">True</property>
                             <property name="editable">False</property>
                           </object>
                         </child>
@@ -113,7 +113,7 @@
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">True</property>
-                    <property name="position">1</property>
+                    <property name="position">0</property>
                   </packing>
                 </child>
                 <child>
@@ -148,7 +148,7 @@
                             <property name="id_column">0</property>
                             <child internal-child="entry">
                               <object class="GtkEntry" id="combobox-entry2">
-                                <property name="can_focus">False</property>
+                                <property name="can_focus">True</property>
                               </object>
                             </child>
                           </object>
@@ -363,7 +363,7 @@
                             <property name="id_column">0</property>
                             <child internal-child="entry">
                               <object class="GtkEntry" id="combobox-entry3">
-                                <property name="can_focus">False</property>
+                                <property name="can_focus">True</property>
                               </object>
                             </child>
                           </object>
@@ -447,6 +447,56 @@
                       <packing>
                         <property name="position">3</property>
                         <property name="tab_fill">False</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkBox" id="box11">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <child>
+                      <object class="GtkLabel" id="label14">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Recorded Filename:</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkEntry" id="recordedFilenameEntry">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="hexpand">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="chooseRecordedFilenameButton">
+                        <property name="label" translatable="yes">...</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <property name="relief">half</property>
+                        <signal name="clicked" handler="on_chooseRecordedFilenameButton_clicked" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">2</property>
                       </packing>
                     </child>
                   </object>

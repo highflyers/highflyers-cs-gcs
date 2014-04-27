@@ -18,6 +18,7 @@ namespace HighFlyers.GCS
 		[UI] Entry heightEntry;
 		[UI] ComboBox cameraDeviceComboBox;
 		[UI] ListStore videoDeviceListStore;
+		[UI] Entry recordedFilenameEntry;
 		AppConfiguration settings;
 		StringBuilder pipeline_builder;
 
@@ -55,6 +56,7 @@ namespace HighFlyers.GCS
 		void LoadSettings ()
 		{
 			pipelineTextView.Buffer.Text = settings.GetString ("Video", "Pipeline");
+			recordedFilenameEntry.Text = settings.GetString ("Video", "Filename");
 		}
 
 		protected void on_ok_button_clicked (object sender, EventArgs e)
@@ -62,6 +64,7 @@ namespace HighFlyers.GCS
 			try {
 				BuildPipeline ();
 				settings.SetString ("Video", "Pipeline", pipeline_builder.ToString ());
+				settings.SetString ("Video", "Filename", recordedFilenameEntry.Text);
 			} catch (Exception ex) {
 				// todo improve log
 				Console.WriteLine ("Cannot save pipeline: " + ex.Message);
@@ -78,6 +81,18 @@ namespace HighFlyers.GCS
 		protected void on_reloadCameraListButton_clicked (object sender, EventArgs e)
 		{
 			ReloadCameraList ();
+		}
+
+		protected void on_chooseRecordedFilenameButton_clicked (object sender, EventArgs e)
+		{
+			var chooser = new FileChooserDialog ("Select File", Toplevel as Gtk.Window, FileChooserAction.Save);
+			chooser.AddButton (Stock.Cancel, ResponseType.Cancel);
+			chooser.AddButton (Stock.Ok, ResponseType.Ok);
+
+			if (chooser.Run () == (int)ResponseType.Ok) {
+				recordedFilenameEntry.Text = chooser.Filename;
+			}
+			chooser.Destroy ();
 		}
 
 		void HideVideoSourceTabs ()
