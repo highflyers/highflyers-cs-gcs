@@ -47,7 +47,7 @@ namespace HighFlyers.GCS
 		protected void on_recordCameraToggleButton_toggled (object sender, EventArgs e)
 		{
 			if (recordCameraToggleButton.Active) {
-				video.StartRecording ("filename");
+				video.StartRecording ();
 			} else { 
 				video.StopRecording ();
 			}

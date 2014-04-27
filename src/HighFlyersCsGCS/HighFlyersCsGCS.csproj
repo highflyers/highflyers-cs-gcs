@@ -80,6 +80,7 @@
     <Compile Include="Map\MapWidget.cs" />
     <Compile Include="ConfigurationDialog.cs" />
     <Compile Include="AppConfiguration.cs" />
+    <Compile Include="PipelineBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="interfaces\MainWindow.ui" />

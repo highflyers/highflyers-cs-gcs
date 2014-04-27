@@ -20,7 +20,6 @@ namespace HighFlyers.GCS
 		[UI] ListStore videoDeviceListStore;
 		[UI] Entry recordedFilenameEntry;
 		AppConfiguration settings;
-		StringBuilder pipeline_builder;
 
 		public ConfigurationDialog (Builder builder, IntPtr handle) : base(handle)
 		{
@@ -55,16 +54,34 @@ namespace HighFlyers.GCS
 
 		void LoadSettings ()
 		{
-			pipelineTextView.Buffer.Text = settings.GetString ("Video", "Pipeline");
+			pipelineTextView.Buffer.Text = settings.GetString ("Video", "CustomPipeline");
 			recordedFilenameEntry.Text = settings.GetString ("Video", "Filename");
+			videoSourceComboBox.Active = settings.GetInt ("Video", "Source");
+			testSourceSampleComboBox.Active = settings.GetInt ("Video", "TestPattern");
+			portEntry.Text = settings.GetInt ("Video", "UDPPort").ToString ();
+			widthEntry.Text = settings.GetInt ("Video", "Width").ToString ();
+			heightEntry.Text = settings.GetInt ("Video", "Height").ToString ();
+			framerateEntry.Text = settings.GetInt ("Video", "Framerate").ToString ();
 		}
 
 		protected void on_ok_button_clicked (object sender, EventArgs e)
 		{
 			try {
-				BuildPipeline ();
-				settings.SetString ("Video", "Pipeline", pipeline_builder.ToString ());
 				settings.SetString ("Video", "Filename", recordedFilenameEntry.Text);
+				settings.SetInt ("Video", "Source", videoSourceComboBox.Active);
+				settings.SetInt ("Video", "TestPattern", testSourceSampleComboBox.Active);
+				settings.SetInt ("Video", "UDPPort", Convert.ToInt32(portEntry.Text));
+				settings.SetInt ("Video", "Width", Convert.ToInt32(widthEntry.Text));
+				settings.SetInt ("Video", "Height", Convert.ToInt32(heightEntry.Text));
+				settings.SetInt ("Video", "Framerate", Convert.ToInt32(framerateEntry.Text));
+
+				TreeIter tree;
+				cameraDeviceComboBox.GetActiveIter (out tree);
+				var selectedText = (String)cameraDeviceComboBox.Model.GetValue (tree, 0);
+
+				settings.SetString ("Video", "V4l2Device", selectedText);
+				settings.SetString ("Video", "CustomPipeline", pipelineTextView.Buffer.Text);
+
 			} catch (Exception ex) {
 				// todo improve log
 				Console.WriteLine ("Cannot save pipeline: " + ex.Message);
@@ -106,61 +123,6 @@ namespace HighFlyers.GCS
 					page.Hide ();
 				}
 			}
-		}
-
-		void BuildPipeline ()
-		{
-			pipeline_builder = new StringBuilder ();
-
-			switch (videoSourceComboBox.Active) {
-			case 0:
-				BuildTestPipeline ();
-				break;
-			case 1:
-				BuildRtpPipeline ();
-				break;
-			case 2:
-				BuildV4l2SrcPipeline ();
-				break;
-			case 3:
-				BuildCustomPipeline ();
-				break;
-			default:
-				throw new Exception ("Unknown video source type");
-			}
-
-			pipeline_builder.Append (" ! autovideosink");
-		}
-
-		void BuildTestPipeline ()
-		{
-			pipeline_builder.AppendFormat ("videotestsrc pattern={0}", testSourceSampleComboBox.Active);
-		}
-
-		void BuildRtpPipeline ()
-		{
-			pipeline_builder.AppendFormat ("udpsrc port={0}", Convert.ToInt32 (portEntry.Text));
-			pipeline_builder.Append (" ! application/x-rtp, payload=96");
-			pipeline_builder.Append (" ! rtpjitterbuffer mode=slave latency=200 drop-on-latency=true");
-			pipeline_builder.Append (" ! rtph264depay");
-			pipeline_builder.AppendFormat (" ! video/x-h264, width={0}, height={1}, framerate={2}/1", 
-			                               Convert.ToInt32 (widthEntry.Text),
-			                               Convert.ToInt32 (heightEntry.Text), 
-			                               Convert.ToInt32 (framerateEntry.Text));
-			pipeline_builder.Append (" ! avdec_h264 ! videoconvert");
-		}
-
-		void BuildV4l2SrcPipeline ()
-		{
-			TreeIter tree;
-			cameraDeviceComboBox.GetActiveIter (out tree);
-			var selectedText = (String)cameraDeviceComboBox.Model.GetValue (tree, 0);
-			pipeline_builder.AppendFormat ("v4l2src device={0}", selectedText);
-		}
-
-		void BuildCustomPipeline ()
-		{
-			pipeline_builder.Append (pipelineTextView.Buffer.Text);
 		}
 	}
 }

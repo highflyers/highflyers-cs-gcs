@@ -16,7 +16,7 @@ namespace HighFlyers.GCS
 		}
 
 
-		private T SafeGet<T> (Func< string, string, T> function, string groupName, string key, Func<T> retMethod = null)
+		private T SafeGet<T> (Func< string, string, T> function, string groupName, string key, Func<T> retMethod)
 		{
 			if (settings.HasGroup (groupName) && settings.HasKey (groupName, key))
 				return function (groupName, key);
@@ -42,6 +42,17 @@ namespace HighFlyers.GCS
 		{
 			settings.SetString (groupName, key, value);
 		}
+
+		public void SetInt (string groupName, string key, int value)
+		{
+			settings.SetInteger (groupName, key, value);
+		}
+
+		public int GetInt (string groupName, string key)
+		{
+			return SafeGet (settings.GetInteger, groupName, key, () => 0);
+		}
+
 	}
 }
 

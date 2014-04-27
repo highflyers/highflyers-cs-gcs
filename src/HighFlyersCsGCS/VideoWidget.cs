@@ -10,7 +10,6 @@ namespace HighFlyers.GCS
 	{
 		DrawingArea drawing_area;
 		Pipeline pipeline;
-		string rec_filename;
 		bool recorder = false;
 
 		public VideoWidget ()
@@ -29,19 +28,17 @@ namespace HighFlyers.GCS
 
 		public void InitPipeline ()
 		{
-			if (pipeline != null) {
+			if (IsPlaying) {
 				ChangeStateWithDelay (Gst.State.Null);
 			}
 
-			string p = AppConfiguration.Instance.GetString ("Video", "Pipeline");
+			PipelineBuilder builder = new PipelineBuilder ();
 
 			if (recorder) {
-				int index = p.LastIndexOf (" ! autovideosink", StringComparison.Ordinal);
-				p = p.Remove (index);
-				p += " ! tee name=my_videosink ! queue ! autovideosink my_videosink. ! queue ! avenc_h263 ! avimux ! filesink location=" + rec_filename;
+				builder.AppendRecorder ();
 			}
 
-			pipeline = Parse.Launch (p) as Pipeline;
+			pipeline = builder.BuildPipeline ();
 			pipeline.Bus.EnableSyncMessageEmission ();
 			pipeline.Bus.AddSignalWatch ();
 
@@ -108,10 +105,9 @@ namespace HighFlyers.GCS
 			ChangeStateWithDelay (Gst.State.Null);
 		}
 
-		public void StartRecording (string filename)
+		public void StartRecording ()
 		{
 			recorder = true;
-			rec_filename = filename;
 
 			if (IsPlaying) {
 				Stop ();
