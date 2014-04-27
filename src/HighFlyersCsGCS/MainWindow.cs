@@ -24,7 +24,6 @@ namespace HighFlyers.GCS
 
 			box2.Add (video);
 			video.Show ();
-
 		}
 
 		void on_configurationButton_clicked (object sender, EventArgs e)

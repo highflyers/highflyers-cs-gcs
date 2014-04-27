@@ -65,6 +65,7 @@
       <Private>False</Private>
       <Package>gio-sharp-3.0</Package>
     </Reference>
+    <Reference Include="Mono.Posix" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
@@ -81,6 +82,7 @@
     <Compile Include="ConfigurationDialog.cs" />
     <Compile Include="AppConfiguration.cs" />
     <Compile Include="PipelineBuilder.cs" />
+    <Compile Include="RS232.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="interfaces\MainWindow.ui" />
