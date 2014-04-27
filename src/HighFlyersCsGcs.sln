@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "highflyers-protocol-generat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "highflyers-protocol-test", "..\highflyers-protocol\src\csharp\highflyers-protocol-test\highflyers-protocol-test.csproj", "{F92AF33D-73D4-4CB4-A870-267AD8F685AB}"
 EndProject
+Project("{2857B73E-F847-4B02-9238-064979017E93}") = "Algorithms", "Algorithms\Algorithms.cproj", "{7164AEB4-0C16-43E3-A62E-87A8159F733E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -23,6 +25,10 @@ Global
 		{2AEF581B-AC28-42BC-9B85-40E2AD2385D1}.Debug|x86.Build.0 = Debug|x86
 		{2AEF581B-AC28-42BC-9B85-40E2AD2385D1}.Release|x86.ActiveCfg = Release|x86
 		{2AEF581B-AC28-42BC-9B85-40E2AD2385D1}.Release|x86.Build.0 = Release|x86
+		{7164AEB4-0C16-43E3-A62E-87A8159F733E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7164AEB4-0C16-43E3-A62E-87A8159F733E}.Debug|x86.Build.0 = Debug|Any CPU
+		{7164AEB4-0C16-43E3-A62E-87A8159F733E}.Release|x86.ActiveCfg = Release|Any CPU
+		{7164AEB4-0C16-43E3-A62E-87A8159F733E}.Release|x86.Build.0 = Release|Any CPU
 		{EBB700AD-54C4-4AEE-90B4-A6C074617999}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{EBB700AD-54C4-4AEE-90B4-A6C074617999}.Debug|x86.Build.0 = Debug|Any CPU
 		{EBB700AD-54C4-4AEE-90B4-A6C074617999}.Release|x86.ActiveCfg = Release|Any CPU

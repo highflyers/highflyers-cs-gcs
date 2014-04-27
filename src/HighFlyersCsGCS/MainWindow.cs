@@ -68,5 +68,9 @@ namespace HighFlyers.GCS
 			Application.Quit ();
 			a.RetVal = true;
 		}
+
+		// todo write another methods here
+		[System.Runtime.InteropServices.DllImport ("libAlgorithms.so")]
+		static extern int dummy_method(IntPtr buf);
 	}
 }
