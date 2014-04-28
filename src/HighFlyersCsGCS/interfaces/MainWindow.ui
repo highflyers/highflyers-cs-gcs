@@ -123,6 +123,21 @@
                     <property name="position">6</property>
                   </packing>
                 </child>
+                <child>
+                  <object class="GtkToggleButton" id="connectionToggleButton">
+                    <property name="label" translatable="yes">connect/disconnect</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="xalign">0.50999999046325684</property>
+                    <signal name="toggled" handler="on_connectionToggleButton_toggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">7</property>
+                  </packing>
+                </child>
               </object>
               <packing>
                 <property name="expand">False</property>
