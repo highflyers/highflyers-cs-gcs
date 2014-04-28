@@ -3,6 +3,7 @@ using Mono.Unix;
 using System.IO;
 using System.Threading;
 using System;
+using System.Linq;
 
 // For tests purpose, use 
 // $ socat -d -d pty,raw,echo=0 pty,raw,echo=0
@@ -22,6 +23,13 @@ namespace HighFlyers.GCS
 		Thread reader;
 
 		public event DataEventHandler DataReceived;
+
+		public bool IsConnected {
+			get {
+				// todo implement it!
+				return true;
+			}
+		}
 
 		public RS232 (string port, int baudRate)
 		{
@@ -68,7 +76,7 @@ namespace HighFlyers.GCS
 				int len = stream.Read (buf, 0, 1024);
 
 				if (len > 0 && DataReceived != null)
-					DataReceived(this, new DataEventArgs (buf));
+					DataReceived(this, new DataEventArgs (buf.Take(len).ToArray()));
 			}
 		}
 	}
