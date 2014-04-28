@@ -19,6 +19,9 @@ namespace HighFlyers.GCS
 		[UI] ComboBox cameraDeviceComboBox;
 		[UI] ListStore videoDeviceListStore;
 		[UI] Entry recordedFilenameEntry;
+		[UI] Entry portNameEntry;
+		[UI] Entry baudRateEntry;
+
 		AppConfiguration settings;
 
 		public ConfigurationDialog (Builder builder, IntPtr handle) : base(handle)
@@ -54,6 +57,9 @@ namespace HighFlyers.GCS
 
 		void LoadSettings ()
 		{
+			portNameEntry.Text = settings.GetString ("Communication", "PortName");
+			baudRateEntry.Text = settings.GetInt ("Communication", "BaudRate").ToString ();
+
 			pipelineTextView.Buffer.Text = settings.GetString ("Video", "CustomPipeline");
 			recordedFilenameEntry.Text = settings.GetString ("Video", "Filename");
 			videoSourceComboBox.Active = settings.GetInt ("Video", "Source");
@@ -67,6 +73,9 @@ namespace HighFlyers.GCS
 		protected void on_ok_button_clicked (object sender, EventArgs e)
 		{
 			try {
+				settings.SetString ("Communication", "PortName", portNameEntry.Text);
+				settings.SetInt ("Communication", "BaudRate", Convert.ToInt32(baudRateEntry.Text));
+
 				settings.SetString ("Video", "Filename", recordedFilenameEntry.Text);
 				settings.SetInt ("Video", "Source", videoSourceComboBox.Active);
 				settings.SetInt ("Video", "TestPattern", testSourceSampleComboBox.Active);

@@ -15,25 +15,30 @@ namespace HighFlyers.GCS
 	public class RS232
 	{
 		string port_name;
+		int baud_rate;
+
 		int port_descriptor;
 		UnixStream stream;
 		Thread reader;
 
 		public event DataEventHandler DataReceived;
 
-		public RS232 (string port)
+		public RS232 (string port, int baudRate)
 		{
 			port_name = port;
+			baud_rate = baudRate;
 		}
 
 		public void Open () 
 		{
 			port_descriptor = Syscall.open(port_name, OpenFlags.O_RDWR);
 
+
 			if (port_descriptor == -1)
 				throw new IOException ("Cannot open port (but please, don't ask me about the reason)!");
 
 			stream = new UnixStream(port_descriptor);
+
 			
 			reader = new Thread (new ThreadStart (ReadData));
 			reader.Start ();
