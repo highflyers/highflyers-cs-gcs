@@ -26,8 +26,7 @@ namespace HighFlyers.GCS
 
 		public bool IsConnected {
 			get {
-				// todo implement it!
-				return true;
+				return port_descriptor != -1 && stream != null;
 			}
 		}
 

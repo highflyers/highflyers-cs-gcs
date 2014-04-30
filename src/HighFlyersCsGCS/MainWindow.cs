@@ -13,6 +13,7 @@ namespace HighFlyers.GCS
 
 		VideoWidget video;
 		RS232 serial_port;
+		bool connection_click_transaction = false;
 
 		public MainWindow (Builder builder, IntPtr handle): base (handle)
 		{
@@ -47,8 +48,15 @@ namespace HighFlyers.GCS
 					serial_port = new RS232 (AppConfiguration.Instance.GetString ("Communication", "PortName"),
 					                         AppConfiguration.Instance.GetInt ("Communication", "BaudRate"));
 					serial_port.DataReceived += (s, ev) => Console.WriteLine (ev.Buffer.Length);
-					if (was_connected)
-						serial_port.Open ();
+					try {
+						if (was_connected)
+							serial_port.Open ();
+					} catch (Exception ex) {
+						Console.WriteLine ("Cannot reopen port: " + ex.Message);
+						connection_click_transaction = true;
+						connectionToggleButton.Active = serial_port.IsConnected;
+						connection_click_transaction = false;
+					}
 				}
 			} catch (Exception ex) {
 				Console.WriteLine (ex.Message);
@@ -66,6 +74,9 @@ namespace HighFlyers.GCS
 
 		protected void on_connectionToggleButton_toggled (object sender, EventArgs e)
 		{
+			if (connection_click_transaction)
+				return;
+
 			if (connectionToggleButton.Active) {
 				try {
 					// todo probably we don't need create this object everytime
@@ -76,10 +87,14 @@ namespace HighFlyers.GCS
 				} catch (Exception ex) {
 					// todo loggin again...
 					Console.WriteLine ("Cannot connect with port: " + ex.Message);
+					connection_click_transaction = true;
+					connectionToggleButton.Active = serial_port.IsConnected;
+					connection_click_transaction = false;
 				} finally {
 					if (serial_port == null || !serial_port.IsConnected) {
-						// todo check, infinite loop?? RTFM
+						connection_click_transaction = true;
 						connectionToggleButton.Active = false;
+						connection_click_transaction = false;
 					}
 				}
 			} else {
