@@ -46,7 +46,7 @@ namespace HighFlyers.GCS
 			}
 
 			if (type != PipelineType.Custom) {
-				pipeline_builder.Append (" ! autovideosink");
+				pipeline_builder.Append (" ! textoverlay name=toverlay xpos=30 ypos=30 halignment=left valignment=top font-desc=\"arial 22\" ! autovideosink");
 			}
 
 			string built_pipeline = pipeline_builder.ToString ();
@@ -61,7 +61,7 @@ namespace HighFlyers.GCS
 					built_pipeline += " ! tee name=my_videosink ! queue ! autovideosink my_videosink. ! queue ! avenc_h263 ! avimux ! filesink location=" + filename;
 				}
 			}
-
+			Console.WriteLine (built_pipeline);
 			return Gst.Parse.Launch (built_pipeline) as Gst.Pipeline;
 		}
 
@@ -82,7 +82,7 @@ namespace HighFlyers.GCS
 
 		void BuildRtpPipeline ()
 		{
-			pipeline_builder.AppendFormat ("udpsrc port={0}", settings.GetInt ("Video", "Port"));
+			pipeline_builder.AppendFormat ("udpsrc port={0}", settings.GetInt ("Video", "UDPPort"));
 			pipeline_builder.Append (" ! application/x-rtp, payload=96");
 			pipeline_builder.Append (" ! rtpjitterbuffer mode=slave latency=200 drop-on-latency=true");
 			pipeline_builder.Append (" ! rtph264depay");
@@ -94,7 +94,7 @@ namespace HighFlyers.GCS
 
 		void BuildV4l2SrcPipeline ()
 		{
-			pipeline_builder.AppendFormat ("v4l2src device={0}", settings.GetString ("Video", "V4L2Device"));
+			pipeline_builder.AppendFormat ("v4l2src device={0}", settings.GetString ("Video", "V4l2Device"));
 		}
 
 		

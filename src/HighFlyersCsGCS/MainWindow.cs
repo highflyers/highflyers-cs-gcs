@@ -10,10 +10,11 @@ namespace HighFlyers.GCS
 		[UI] Gtk.ToggleButton startStopCameraToggleButton;
 		[UI] ToggleButton recordCameraToggleButton;
 		[UI] ToggleButton connectionToggleButton;
-
+		[UI] ToggleButton hudToggleButton;
 		VideoWidget video;
 		RS232 serial_port;
 		bool connection_click_transaction = false;
+		HighFlyers.Protocol.Parser<HighFlyers.Protocol.FrameBuilder> parser = new HighFlyers.Protocol.Parser<HighFlyers.Protocol.FrameBuilder> ();
 
 		public MainWindow (Builder builder, IntPtr handle): base (handle)
 		{
@@ -27,10 +28,41 @@ namespace HighFlyers.GCS
 
 			box2.Add (video);
 			video.Show ();
+			parser.FrameParsed += HandleFrameParsed;
+		}
+
+		void HandleFrameParsed (object sender, HighFlyers.Protocol.FrameParsedEventArgs args)
+		{
+			var data = args.ParsedFrame as HighFlyers.Protocol.Frames.GPSData;
+
+			if (data == null)
+				return;
+
+			var ToHumanReadable = new Func<double, string> (v => {
+				{
+					int h = (int)Math.Floor (v);
+					int m = (int)((v - h) * 60);
+					double s = (v - h - m / 60.0) * 3600;
+					return h + "* " + m + "' " + Math.Round (s, 2) + "''";
+				}});
+
+			Gtk.Application.Invoke (delegate {
+				if (!hudToggleButton.Active) {
+					video.SetOverlay ("");
+					return;
+				}
+
+				string time = data.time.ToString ();
+				time = time.Insert (time.Length - 2, ":");
+				time = time.Insert (time.Length - 5, ":");
+				video.SetOverlay ("GPS Time: " + time + "\nLatitude: " + ToHumanReadable (data.latitude) + "\nLongitude: " + ToHumanReadable (data.longitude));
+			});
+		
 		}
 
 		void on_configurationButton_clicked (object sender, EventArgs e)
 		{
+			bool was_connected = serial_port != null && serial_port.IsConnected;
 			try {
 				var builder = new Builder (null, "HighFlyers.GCS.interfaces.ConfigurationDialog.ui", null);
 				var conf = new ConfigurationDialog (builder, builder.GetObject ("configuration_dialog").Handle);
@@ -40,26 +72,30 @@ namespace HighFlyers.GCS
 						video.Start ();
 					}
 
-					bool was_connected = serial_port != null && serial_port.IsConnected;
-
 					if (was_connected)
 						serial_port.Close ();
 
 					serial_port = new RS232 (AppConfiguration.Instance.GetString ("Communication", "PortName"),
 					                         AppConfiguration.Instance.GetInt ("Communication", "BaudRate"));
-					serial_port.DataReceived += (s, ev) => Console.WriteLine (ev.Buffer.Length);
-					try {
-						if (was_connected)
-							serial_port.Open ();
-					} catch (Exception ex) {
-						Console.WriteLine ("Cannot reopen port: " + ex.Message);
-						connection_click_transaction = true;
-						connectionToggleButton.Active = serial_port.IsConnected;
-						connection_click_transaction = false;
-					}
+					serial_port.DataReceived += (s, ev) => {
+						Console.WriteLine (ev.Buffer.Length);
+						parser.AppendBytes (ev.Buffer);
+					};
+					if (was_connected)
+						serial_port.Open ();
 				}
 			} catch (Exception ex) {
 				Console.WriteLine (ex.Message);
+			}
+
+			try {
+				if (was_connected)
+					serial_port.Open ();
+			} catch (Exception ex) {
+				Console.WriteLine ("Cannot reopen port: " + ex.Message);
+				connection_click_transaction = true;
+				connectionToggleButton.Active = serial_port.IsConnected;
+				connection_click_transaction = false;
 			}
 		}
 
@@ -82,7 +118,14 @@ namespace HighFlyers.GCS
 					// todo probably we don't need create this object everytime
 					serial_port = new RS232 (AppConfiguration.Instance.GetString ("Communication", "PortName"),
 					                         AppConfiguration.Instance.GetInt ("Communication", "BaudRate"));
-					serial_port.DataReceived += (s, ev) => Console.WriteLine (ev.Buffer.Length); // todo don't forget about removing handler!
+					serial_port.DataReceived += (s, ev) => {
+						try {
+							Console.WriteLine (ev.Buffer.Length); 
+							parser.AppendBytes (ev.Buffer);
+						} catch (Exception ex) {
+							Console.WriteLine (ex.Message);
+						}
+					}; // todo don't forget about removing handler!
 					serial_port.Open ();
 				} catch (Exception ex) {
 					// todo loggin again...
@@ -107,8 +150,7 @@ namespace HighFlyers.GCS
 			if (startStopCameraToggleButton.Active) {
 				video.InitPipeline ();
 				video.Start ();
-			}
-			else
+			} else
 				video.Stop ();
 		}
 
@@ -117,9 +159,8 @@ namespace HighFlyers.GCS
 			Application.Quit ();
 			a.RetVal = true;
 		}
-
 		// todo write another methods here
 		[System.Runtime.InteropServices.DllImport ("libAlgorithms.so")]
-		static extern int dummy_method(IntPtr buf);
+		static extern int dummy_method (IntPtr buf);
 	}
 }

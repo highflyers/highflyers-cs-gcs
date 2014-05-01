@@ -26,6 +26,18 @@ namespace HighFlyers.GCS
 
 		}
 
+		public void SetOverlay (string overlayText)
+		{
+			if (pipeline == null)
+				return;
+			Element e = pipeline.GetByName ("toverlay");
+
+			if (e == null)
+				return;
+
+			e ["text"] = overlayText;
+		}
+
 		public void InitPipeline ()
 		{
 			if (IsPlaying) {
