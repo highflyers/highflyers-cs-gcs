@@ -32,11 +32,13 @@ namespace HighFlyers.GCS
 
 		public RS232 (string port, int baudRate)
 		{
+			Logger.Instance.Log (LogLevel.Debug, "Creating RS232 object");
 			UpdateParameters (port, baudRate);
 		}
 
 		public void Open () 
 		{
+			Logger.Instance.Log (LogLevel.Debug, "Trying to estabilishe connection...");
 			port_descriptor = Syscall.open(port_name, OpenFlags.O_RDWR);
 
 
@@ -44,7 +46,7 @@ namespace HighFlyers.GCS
 				throw new IOException ("Cannot open port (but please, don't ask me about the reason)!");
 
 			stream = new UnixStream(port_descriptor);
-
+			Logger.Instance.Log (LogLevel.Info, "Connection estabilished. Port: " + port_name);
 			
 			reader = new Thread (new ThreadStart (ReadData));
 			reader.Start ();
@@ -52,24 +54,30 @@ namespace HighFlyers.GCS
 
 		public void Close ()
 		{
+			Logger.Instance.Log (LogLevel.Debug, "Trying to close connection...");
 			reader.Abort ();
 			reader.Join ();
 			Syscall.close (port_descriptor);
+			Logger.Instance.Log (LogLevel.Info, "Connection closed");
 		}
 
 		public void UpdateParameters (string port, int baudRate)
 		{
 			port_name = port;
 			baud_rate = baudRate;
+
+			Logger.Instance.Log (LogLevel.Debug, String.Format ("Updating RS232 parameters: portname: {0} baudrate: {1}", port, baudRate));
 		}
 
 		public void Write (byte[] buf)
 		{
+			Logger.Instance.Log (LogLevel.Debug, "Writing buffer. Size of buffer: " + buf.Length);
 			stream.Write (buf, 0, buf.Length);
 		}
 
 		public void Write (byte b)
 		{
+			Logger.Instance.Log (LogLevel.Debug, "Writing single byte " + b);
 			stream.WriteByte (b);
 		}
 
@@ -79,8 +87,10 @@ namespace HighFlyers.GCS
 				var buf = new byte[1024];
 				int len = stream.Read (buf, 0, 1024);
 
-				if (len > 0 && DataReceived != null)
-					DataReceived(this, new DataEventArgs (buf.Take(len).ToArray()));
+				if (len > 0 && DataReceived != null) {
+					Logger.Instance.Log (LogLevel.Debug, "Read data. Size of received buffer: " + len);
+					DataReceived (this, new DataEventArgs (buf.Take (len).ToArray ()));
+				}
 			}
 		}
 	}
