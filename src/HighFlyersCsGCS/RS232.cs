@@ -32,8 +32,7 @@ namespace HighFlyers.GCS
 
 		public RS232 (string port, int baudRate)
 		{
-			port_name = port;
-			baud_rate = baudRate;
+			UpdateParameters (port, baudRate);
 		}
 
 		public void Open () 
@@ -56,6 +55,12 @@ namespace HighFlyers.GCS
 			reader.Abort ();
 			reader.Join ();
 			Syscall.close (port_descriptor);
+		}
+
+		public void UpdateParameters (string port, int baudRate)
+		{
+			port_name = port;
+			baud_rate = baudRate;
 		}
 
 		public void Write (byte[] buf)

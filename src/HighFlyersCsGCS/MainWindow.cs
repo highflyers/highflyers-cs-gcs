@@ -29,6 +29,10 @@ namespace HighFlyers.GCS
 			box2.Add (video);
 			video.Show ();
 			parser.FrameParsed += HandleFrameParsed;
+
+			serial_port = new RS232 (AppConfiguration.Instance.GetString ("Communication", "PortName"),
+			                         AppConfiguration.Instance.GetInt ("Communication", "BaudRate"));
+			serial_port.DataReceived += DataReceivedHandler;
 		}
 
 		void HandleFrameParsed (object sender, HighFlyers.Protocol.FrameParsedEventArgs args)
@@ -75,12 +79,8 @@ namespace HighFlyers.GCS
 					if (was_connected)
 						serial_port.Close ();
 
-					serial_port = new RS232 (AppConfiguration.Instance.GetString ("Communication", "PortName"),
+					serial_port.UpdateParameters (AppConfiguration.Instance.GetString ("Communication", "PortName"),
 					                         AppConfiguration.Instance.GetInt ("Communication", "BaudRate"));
-					serial_port.DataReceived += (s, ev) => {
-						Console.WriteLine (ev.Buffer.Length);
-						parser.AppendBytes (ev.Buffer);
-					};
 					if (was_connected)
 						serial_port.Open ();
 				}
@@ -115,17 +115,6 @@ namespace HighFlyers.GCS
 
 			if (connectionToggleButton.Active) {
 				try {
-					// todo probably we don't need create this object everytime
-					serial_port = new RS232 (AppConfiguration.Instance.GetString ("Communication", "PortName"),
-					                         AppConfiguration.Instance.GetInt ("Communication", "BaudRate"));
-					serial_port.DataReceived += (s, ev) => {
-						try {
-							Console.WriteLine (ev.Buffer.Length); 
-							parser.AppendBytes (ev.Buffer);
-						} catch (Exception ex) {
-							Console.WriteLine (ex.Message);
-						}
-					}; // todo don't forget about removing handler!
 					serial_port.Open ();
 				} catch (Exception ex) {
 					// todo loggin again...
@@ -142,6 +131,16 @@ namespace HighFlyers.GCS
 				}
 			} else {
 				serial_port.Close ();
+			}
+		}
+
+		void DataReceivedHandler (object sender, DataEventArgs e)
+		{
+			try {
+				parser.AppendBytes (e.Buffer);
+			} catch (Exception ex) {
+				// todo loggin
+				Console.WriteLine (ex.Message);
 			}
 		}
 
