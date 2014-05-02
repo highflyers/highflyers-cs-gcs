@@ -83,6 +83,7 @@
     <Compile Include="AppConfiguration.cs" />
     <Compile Include="PipelineBuilder.cs" />
     <Compile Include="RS232.cs" />
+    <Compile Include="Logger.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="interfaces\MainWindow.ui" />
