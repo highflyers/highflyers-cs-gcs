@@ -3,13 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HighFlyersCsGCS", "HighFlyersCsGCS\HighFlyersCsGCS.csproj", "{2AEF581B-AC28-42BC-9B85-40E2AD2385D1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "highflyers-protocol", "..\highflyers-protocol\src\csharp\highflyers-protocol\highflyers-protocol.csproj", "{EBB700AD-54C4-4AEE-90B4-A6C074617999}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "highflyers-protocol-generator", "..\highflyers-protocol\src\csharp\highflyers-protocol-generator\highflyers-protocol-generator.csproj", "{180F8274-24C9-417E-9120-C17A0CBEF180}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "highflyers-protocol-test", "..\highflyers-protocol\src\csharp\highflyers-protocol-test\highflyers-protocol-test.csproj", "{F92AF33D-73D4-4CB4-A870-267AD8F685AB}"
-EndProject
 Project("{2857B73E-F847-4B02-9238-064979017E93}") = "Algorithms", "Algorithms\Algorithms.cproj", "{7164AEB4-0C16-43E3-A62E-87A8159F733E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "highflyers-protocol", "..\highflyers-protocol\src\highflyers-protocol\highflyers-protocol.csproj", "{EBB700AD-54C4-4AEE-90B4-A6C074617999}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "highflyers-protocol-generator", "..\highflyers-protocol\src\highflyers-protocol-generator\highflyers-protocol-generator.csproj", "{180F8274-24C9-417E-9120-C17A0CBEF180}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,10 +31,6 @@ Global
 		{EBB700AD-54C4-4AEE-90B4-A6C074617999}.Debug|x86.Build.0 = Debug|Any CPU
 		{EBB700AD-54C4-4AEE-90B4-A6C074617999}.Release|x86.ActiveCfg = Release|Any CPU
 		{EBB700AD-54C4-4AEE-90B4-A6C074617999}.Release|x86.Build.0 = Release|Any CPU
-		{F92AF33D-73D4-4CB4-A870-267AD8F685AB}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{F92AF33D-73D4-4CB4-A870-267AD8F685AB}.Debug|x86.Build.0 = Debug|Any CPU
-		{F92AF33D-73D4-4CB4-A870-267AD8F685AB}.Release|x86.ActiveCfg = Release|Any CPU
-		{F92AF33D-73D4-4CB4-A870-267AD8F685AB}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = HighFlyersCsGCS\HighFlyersCsGCS.csproj

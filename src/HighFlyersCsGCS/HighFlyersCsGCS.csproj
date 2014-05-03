@@ -23,7 +23,7 @@
     <PlatformTarget>x86</PlatformTarget>
     <CustomCommands>
       <CustomCommands>
-        <Command type="BeforeBuild" command="${ProjectDir}/../../highflyers-protocol/src/csharp/highflyers-protocol-generator/bin/${ProjectConfigName}/highflyers-protocol-generator.exe ${ProjectDir}/Protocol/description.hfproto ${ProjectDir}/Protocol/Frames.cs ${ProjectDir}/Protocol/FrameBuilder.cs" />
+        <Command type="BeforeBuild" command="${ProjectDir}/../../highflyers-protocol/src/highflyers-protocol-generator/bin/${ProjectConfigName}/highflyers-protocol-generator.exe ${ProjectDir}/Protocol/description.hfproto ${ProjectDir}/Protocol/Frames.cs ${ProjectDir}/Protocol/FrameBuilder.cs" />
       </CustomCommands>
     </CustomCommands>
   </PropertyGroup>
@@ -103,16 +103,16 @@
     <Folder Include="Configuration\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\highflyers-protocol\src\csharp\highflyers-protocol\highflyers-protocol.csproj">
+    <None Include="Protocol\description.hfproto" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\highflyers-protocol\src\highflyers-protocol\highflyers-protocol.csproj">
       <Project>{EBB700AD-54C4-4AEE-90B4-A6C074617999}</Project>
       <Name>highflyers-protocol</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\highflyers-protocol\src\csharp\highflyers-protocol-generator\highflyers-protocol-generator.csproj">
+    <ProjectReference Include="..\..\highflyers-protocol\src\highflyers-protocol-generator\highflyers-protocol-generator.csproj">
       <Project>{180F8274-24C9-417E-9120-C17A0CBEF180}</Project>
       <Name>highflyers-protocol-generator</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Protocol\description.hfproto" />
   </ItemGroup>
 </Project>
