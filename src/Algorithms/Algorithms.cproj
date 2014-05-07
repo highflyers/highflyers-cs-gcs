@@ -11,6 +11,11 @@
     </Compiler>
     <Language>CPP</Language>
     <Target>Bin</Target>
+    <Packages>
+      <Packages>
+        <Package file="/usr/lib/pkgconfig/gstreamermm-1.0.pc" name="gstreamermm" IsProject="False" />
+      </Packages>
+    </Packages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
