@@ -82,9 +82,7 @@ namespace HighFlyers.GCS
 
 		void BuildRtpPipeline ()
 		{
-			pipeline_builder.AppendFormat ("udpsrc port={0}", settings.GetInt ("Video", "UDPPort"));
-			pipeline_builder.Append (" ! application/x-rtp, payload=96");
-			pipeline_builder.Append (" ! rtpjitterbuffer mode=slave latency=200 drop-on-latency=true");
+			pipeline_builder.AppendFormat ("udpsrc port={0} caps=\"application/x-rtp, media=(string)video, clock-rate=(int)90000, encoding-name=(string)H264\"", settings.GetInt ("Video", "UDPPort"));
 			pipeline_builder.Append (" ! rtph264depay");
 			pipeline_builder.AppendFormat (" ! video/x-h264, width={0}, height={1}, framerate={2}/1", 
 			                               settings.GetInt ("Video", "Width"), settings.GetInt ("Video", "Height"),
