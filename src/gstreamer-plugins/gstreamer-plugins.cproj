@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D40BC766-C20F-499B-8686-296E467ED339}</ProjectGuid>
+    <Compiler>
+      <Compiler ctype="GppCompiler" />
+    </Compiler>
+    <Language>CPP</Language>
+    <Target>Bin</Target>
+    <Packages>
+      <Packages>
+        <Package file="/usr/lib/pkgconfig/gstreamermm-1.0.pc" name="gstreamermm" IsProject="False" />
+      </Packages>
+    </Packages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug</OutputPath>
+    <OutputName>gstreamer-plugins</OutputName>
+    <CompileTarget>SharedLibrary</CompileTarget>
+    <DefineSymbols>DEBUG MONODEVELOP</DefineSymbols>
+    <SourceDirectory>.</SourceDirectory>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release</OutputPath>
+    <OutputName>gstreamer-plugins</OutputName>
+    <CompileTarget>SharedLibrary</CompileTarget>
+    <OptimizationLevel>3</OptimizationLevel>
+    <DefineSymbols>MONODEVELOP</DefineSymbols>
+    <SourceDirectory>.</SourceDirectory>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="dummy_processor.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="plugin.cpp" />
+    <Compile Include="dummy_processor.cpp" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,5 @@
+Name: gstreamer-plugins
+Description: 
+Version: 0.1
+Libs: -L"/home/loganek/Documents/highflyers-cs-gcs/src/gstreamer-plugins/bin/Release" -lgstreamer-plugins
+Cflags: -I"/home/loganek/Documents/highflyers-cs-gcs/src/gstreamer-plugins"
