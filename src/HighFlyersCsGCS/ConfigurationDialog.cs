@@ -92,8 +92,7 @@ namespace HighFlyers.GCS
 				settings.SetString ("Video", "CustomPipeline", pipelineTextView.Buffer.Text);
 
 			} catch (Exception ex) {
-				// todo improve log
-				Console.WriteLine ("Cannot save pipeline: " + ex.Message);
+				Logger.Instance.Log(LogLevel.Warning, "Cannot save pipeline: " + ex.Message);
 			}
 			settings.Save ();
 			Destroy ();
