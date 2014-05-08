@@ -11,6 +11,7 @@ namespace HighFlyers.GCS
 		[UI] ToggleButton recordCameraToggleButton;
 		[UI] ToggleButton connectionToggleButton;
 		[UI] ToggleButton hudToggleButton;
+		[UI] Box mapBox;
 		Map.FileMapWidget map;
 		VideoWidget video;
 		RS232 serial_port;
@@ -33,7 +34,7 @@ namespace HighFlyers.GCS
 			map = new Map.FileMapWidget ();
 			map.Expand = true;
 
-			box2.Add (map);
+			mapBox.Add (map);
 			map.Show ();
 
 			parser.FrameParsed += HandleFrameParsed;

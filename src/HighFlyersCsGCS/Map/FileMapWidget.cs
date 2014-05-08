@@ -1,12 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-
-using Gtk;
 using Gdk;
-using Cairo;
-
-
+using System;
 
 namespace HighFlyers.GCS.Map
 {
@@ -19,7 +12,6 @@ namespace HighFlyers.GCS.Map
 		private double pixPerGradY;
 		public Gtk.Image mapImage;		//temporaily
 		private Gtk.Image miniImage;
-
 
 		double mouse_x;
 		double mouse_y;
@@ -37,17 +29,13 @@ namespace HighFlyers.GCS.Map
 		{
 			SetSizeRequest(100, 100);
 
-
-
-
 			drag_position_x = 0;
 			drag_position_y = 0;
-			LoadMap ("/home/ketjow/highflyers-cs-gcs/src/HighFlyersCsGCS/bin/Debug/interfaces/images/russia-map");			//temporaly
+			LoadMap ("/home/loganek/MapComponent/MapComponent/Moj_plik.jpeg");			//temporaly
 
 			AddEvents ((int)EventMask.PointerMotionMask | (int)EventMask.ButtonPressMask
 			           | (int)EventMask.ButtonReleaseMask);
 		}
-
 
 		public override void LoadMap(string file)
 		{
@@ -98,8 +86,6 @@ namespace HighFlyers.GCS.Map
 			}
 		}
 
-
-
 		protected override bool OnMotionNotifyEvent (EventMotion evnt)
 		{	
 			SetPosition (end_mouse_x - mouse_x, end_mouse_y - mouse_y);
@@ -107,8 +93,6 @@ namespace HighFlyers.GCS.Map
 
 			return true;
 		}
-
-
 
 		protected override bool OnButtonPressEvent(EventButton evnt)
 		{
@@ -138,29 +122,14 @@ namespace HighFlyers.GCS.Map
 
 		#region Drawing
 
-		//no idea how to draw custom widget in GTK# 3.0 
-
-
-		/*protected  bool OnExposeEvent (Gdk.EventExpose args)
+		protected override bool OnDrawn (Cairo.Context cr)
 		{
-			ImageSurface surface = new ImageSurface("Moj_plik.jpeg");
-
-			Cairo.Context cr =  Gdk.CairoHelper.Create(args.Window);
-
-			//SharpApp parent = (SharpApp) GetAncestor (Gtk.Window.GType);
-
-
-
 			cr.Scale( 5, 5);
 			Gdk.CairoHelper.SetSourcePixbuf (cr, mapImage.Pixbuf, drag_position_x/5, drag_position_y/5);			//dzielone tutaj przez skale
-			//cr.SetSource (surface);
 			cr.Paint();
 
-
-			((IDisposable) cr.Target).Dispose();                                      
-			((IDisposable) cr).Dispose();				
 			return true;  
-		} */
+		} 
 
 		#endregion
 
@@ -175,8 +144,6 @@ namespace HighFlyers.GCS.Map
 		}
 
 		public override bool PathPointFollowerMode{ get; set; }
-
-
 	}
 }
 
