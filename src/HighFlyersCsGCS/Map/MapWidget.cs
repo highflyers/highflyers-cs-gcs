@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 
 namespace HighFlyers.GCS.Map
 {
-	public abstract class MapWidget : Gtk.Widget
+	public abstract class MapWidget : Gtk.DrawingArea
 	{
 		List<Coordinate> waypoints = new List<Coordinate> ();
 		List<Coordinate> path = new List<Coordinate> ();

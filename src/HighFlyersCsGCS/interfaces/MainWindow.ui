@@ -179,15 +179,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkImage" id="image1">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="pixbuf">interfaces/images/russia-map.gif</property>
-                  </object>
-                  <packing>
-                    <property name="resize">True</property>
-                    <property name="shrink">True</property>
-                  </packing>
+                  <placeholder/>
                 </child>
               </object>
               <packing>

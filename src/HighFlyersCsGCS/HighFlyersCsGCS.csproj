@@ -58,14 +58,18 @@
       <SpecificVersion>False</SpecificVersion>
       <Package>gtk-sharp-3.0</Package>
     </Reference>
-    <Reference Include="gstreamer-sharp, Version=0.99.0.0, Culture=neutral, PublicKeyToken=5cbf79803e97ff61">
-      <Private>False</Private>
-    </Reference>
     <Reference Include="gio-sharp, Version=3.0.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
       <Private>False</Private>
       <Package>gio-sharp-3.0</Package>
     </Reference>
     <Reference Include="Mono.Posix" />
+    <Reference Include="gstreamer-sharp, Version=0.99.0.0, Culture=neutral, PublicKeyToken=5cbf79803e97ff61">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="cairo-sharp, Version=1.10.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756">
+      <Private>False</Private>
+      <Package>gtk-sharp-3.0</Package>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />

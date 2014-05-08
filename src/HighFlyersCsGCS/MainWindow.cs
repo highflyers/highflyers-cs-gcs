@@ -11,6 +11,7 @@ namespace HighFlyers.GCS
 		[UI] ToggleButton recordCameraToggleButton;
 		[UI] ToggleButton connectionToggleButton;
 		[UI] ToggleButton hudToggleButton;
+		Map.FileMapWidget map;
 		VideoWidget video;
 		RS232 serial_port;
 		bool connection_click_transaction = false;
@@ -28,6 +29,13 @@ namespace HighFlyers.GCS
 
 			box2.Add (video);
 			video.Show ();
+
+			map = new Map.FileMapWidget ();
+			map.Expand = true;
+
+			box2.Add (map);
+			map.Show ();
+
 			parser.FrameParsed += HandleFrameParsed;
 
 			serial_port = new RS232 (AppConfiguration.Instance.GetString ("Communication", "PortName"),
