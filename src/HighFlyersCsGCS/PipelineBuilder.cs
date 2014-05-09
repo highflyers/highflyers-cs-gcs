@@ -61,8 +61,8 @@ namespace HighFlyers.GCS
 					built_pipeline += " ! tee name=my_videosink ! queue ! autovideosink my_videosink. ! queue ! avenc_h263 ! avimux ! filesink location=" + filename;
 				}
 			}
-												//here is some compilation error !!!!
-			Logger.Instance.Log (LogLevel.Info, "Created pipeline: " + built_pipeline);op  ! appsink name=buffer_producer";
+
+			Logger.Instance.Log (LogLevel.Info, "Created pipeline: " + built_pipeline);
 			return Gst.Parse.Launch (built_pipeline) as Gst.Pipeline;
 		}
 
