@@ -9,6 +9,8 @@ namespace HighFlyers.GCS.Map
 		List<Coordinate> waypoints = new List<Coordinate> ();
 		List<Coordinate> path = new List<Coordinate> ();
 
+
+
 		#region Waypoints
 		public virtual void AddWaypoint (Coordinate coordinate)
 		{
