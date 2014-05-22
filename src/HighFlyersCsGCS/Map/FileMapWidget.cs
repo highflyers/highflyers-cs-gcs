@@ -93,11 +93,13 @@ namespace HighFlyers.GCS.Map
 
 		protected override bool OnMotionNotifyEvent (EventMotion evnt)
 		{	
-			SetPosition (end_mouse_x - mouse_x, end_mouse_y - mouse_y);
-			QueueDraw ();
+			//SetPosition (end_mouse_x - mouse_x, end_mouse_y - mouse_y);		//empty for now
+			//QueueDraw ();
 
 			return true;
 		}
+
+
 
 		protected override bool OnButtonPressEvent(EventButton evnt)
 		{
@@ -108,6 +110,13 @@ namespace HighFlyers.GCS.Map
 				button1_clicked = true;
 				mouse_x = evnt.X;
 				mouse_y = evnt.Y;
+			}
+			if (evnt.Type == EventType.TwoButtonPress) 			//Here is doubleclick event!!!!
+			{
+				double mx, my;
+				mx = mouse_x /5 + (-drag_position_x/5);			
+				my = mouse_y /5 + (-drag_position_y/5);
+				AddWaypoint(PixelToCoordinate(new PointD(mx, my)));
 			}
 			return true;
 		}
@@ -122,7 +131,32 @@ namespace HighFlyers.GCS.Map
 				end_mouse_x = evnt.X;
 				end_mouse_y = evnt.Y;
 			}
+			drag_position_x += end_mouse_x - mouse_x;
+			drag_position_y += end_mouse_y - mouse_y;
+			end_mouse_x = 0;
+			end_mouse_y = 0;
+			mouse_x = 0;
+			mouse_y = 0;
+			KeepInBorders ();  //avoiding to drag to far
+			QueueDraw ();
 			return true;
+		}
+
+
+		private void KeepInBorders()
+		{
+			if (drag_position_x > 0) {
+				drag_position_x = 0;
+			}
+			if (drag_position_y > 0) {
+				drag_position_y = 0;
+			}
+			if ((-drag_position_x) + (this.AllocatedWidth)  >  5* this.mapImage.Pixbuf.Width) {
+				drag_position_x = -(5 * this.mapImage.Pixbuf.Width - this.AllocatedWidth) ;
+			}
+			if ((-drag_position_y) + this.AllocatedHeight >  5* this.mapImage.Pixbuf.Height) {
+				drag_position_y =  -(5*  this.mapImage.Pixbuf.Height - this.AllocatedHeight);
+			} 
 		}
 
 		#region Drawing
@@ -149,11 +183,27 @@ namespace HighFlyers.GCS.Map
 			using (Context cr_overlay = new Context (waypoints)) 
 			{
 				int i = 0;
+
 				cr.SetSourceSurface (waypoints, (int)drag_position_x/5, (int)drag_position_y/5);
 
 
 				cr_overlay.SelectFontFace ("Courier", FontSlant.Normal, FontWeight.Bold);		//TODO antialiasing for text is not working
 				cr_overlay.SetFontSize (11);
+
+				if (GetWaypointList ().Count > 1) 
+				{
+					cr_overlay.LineWidth = 2;
+					for(int j = 0; j < GetWaypointList ().Count-1; ++j)
+					{
+						cr_overlay.SetSourceRGB (0.5, 0.5, 0.5);  
+						Coordinate way1 = GetWaypoint (j);
+						Coordinate way2 = GetWaypoint (j+1);
+						cr_overlay.MoveTo(CoordinateToPixel(way1));
+						cr_overlay.LineTo(CoordinateToPixel(way2));
+						cr_overlay.Stroke ();
+					}
+				}
+
 				foreach(Coordinate c in GetWaypointList())
 				{
 					PointD cords = CoordinateToPixel (c);
@@ -168,20 +218,7 @@ namespace HighFlyers.GCS.Map
 					cr_overlay.Fill ();
 					++i;
 				}
-				if (GetWaypointList ().Count > 1) 
-				{
-					for(int j = 0; j < GetWaypointList ().Count-1; ++j)
-					{
-						cr_overlay.SetSourceRGB (0.0, 1.0, 0.0);				//TODO make it draw  
-						Coordinate way1 = GetWaypoint (j);
-						Coordinate way2 = GetWaypoint (j+1);
-						cr_overlay.MoveTo(CoordinateToPixel(way1));
-						cr_overlay.LineTo(CoordinateToPixel(way2));
-						cr_overlay.Fill ();
-					}
 
-
-				}
 			}
 
 
@@ -200,6 +237,13 @@ namespace HighFlyers.GCS.Map
 				(-Convert.ToInt32 ((p.Longitude - startPoint.Longitude) / pixPerGradX),
 				 Convert.ToInt32 ((p.Latitude - startPoint.Latitude) / pixPerGradY));
 			}
+		}
+
+		public Coordinate PixelToCoordinate(PointD p)
+		{
+			return new Coordinate(
+				startPoint.Latitude + p.Y * pixPerGradY,
+				startPoint.Longitude - p.X * pixPerGradX);
 		}
 
 		public override void JumpTo(Coordinate coordinate)
