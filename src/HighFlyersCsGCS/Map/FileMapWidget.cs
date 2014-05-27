@@ -26,6 +26,9 @@ namespace HighFlyers.GCS.Map
 		bool button1_clicked;
 		private bool mapLoaded = false;
 
+		Surface waypoints;
+
+
 		public FileMapWidget () : base ()
 		{
 			AddWaypoint (new Coordinate (1, 2));
@@ -114,8 +117,8 @@ namespace HighFlyers.GCS.Map
 			if (evnt.Type == EventType.TwoButtonPress) 			//Here is doubleclick event!!!!
 			{
 				double mx, my;
-				mx = mouse_x /5 + (-drag_position_x/5);			
-				my = mouse_y /5 + (-drag_position_y/5);
+				mx = mouse_x + (-drag_position_x);			
+				my = mouse_y + (-drag_position_y);
 				AddWaypoint(PixelToCoordinate(new PointD(mx, my)));
 			}
 			return true;
@@ -164,31 +167,35 @@ namespace HighFlyers.GCS.Map
 		protected override bool OnDrawn (Cairo.Context cr)
 		{
 			//cr.Antialias = Antialias.Default;
+
 			cr.Scale( 5, 5);
 			Gdk.CairoHelper.SetSourcePixbuf (cr, mapImage.Pixbuf, drag_position_x/5, drag_position_y/5);			//divided by scale
 			cr.Paint();
-			cr.Scale( 1, 1);
+			cr.Scale( 0.2, 0.2);
 			DrawWaypoints (cr);
 			return true;  
 		} 
 
 		private void DrawWaypoints(Cairo.Context cr)
 		{
-			Surface waypoints;
+
 			using (var target = cr.GetTarget ()) 
 			{
-				waypoints   = target.CreateSimilar (Content.ColorAlpha, AllocatedWidth, AllocatedHeight);
+				if (waypoints == null) 
+				{
+					waypoints = target.CreateSimilar (Content.ColorAlpha, this.mapImage.Pixbuf.Width * 5, this.mapImage.Pixbuf.Height * 5);
+				}
 			}
 
 			using (Context cr_overlay = new Context (waypoints)) 
 			{
 				int i = 0;
 
-				cr.SetSourceSurface (waypoints, (int)drag_position_x/5, (int)drag_position_y/5);
+				cr.SetSourceSurface (waypoints, (int)drag_position_x, (int)drag_position_y);
 
 
-				cr_overlay.SelectFontFace ("Courier", FontSlant.Normal, FontWeight.Bold);		//TODO antialiasing for text is not working
-				cr_overlay.SetFontSize (11);
+				cr_overlay.SelectFontFace ("Courier", FontSlant.Normal, FontWeight.Bold);		
+				cr_overlay.SetFontSize (16);
 
 				if (GetWaypointList ().Count > 1) 
 				{
@@ -208,10 +215,13 @@ namespace HighFlyers.GCS.Map
 				{
 					PointD cords = CoordinateToPixel (c);
 					cr_overlay.SetSourceRGB (0.5, 0.5, 0.5);
-					cr_overlay.Arc (cords.X,cords.Y, 6, 0, 2 * Math.PI);
+					cr_overlay.Arc (cords.X,cords.Y, 12, 0, 2 * Math.PI);
 					cr_overlay.Fill ();
-					cords.X -= 3;				//to draw in center of circle
-					cords.Y += 3;
+					cords.X -= 5;				//to draw in center of circle
+					cords.Y += 4;
+					if (i >= 10) {
+						cords.X -= 4;
+					}
 					cr_overlay.MoveTo (cords);
 					cr_overlay.SetSourceRGB (1.0, 1.0, 1.0);
 					cr_overlay.TextPath (Convert.ToString (i));
