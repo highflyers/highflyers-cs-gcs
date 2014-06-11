@@ -1,6 +1,6 @@
 #ifndef DUMMY_PROCESSOR_H
 #define DUMMY_PROCESSOR_H
-
+#include <cstdio>
 #include <cassert>
 #include <gstreamermm.h>
 #include <gstreamermm/private/element_p.h>
@@ -30,7 +30,12 @@ public:
         Glib::RefPtr<Gst::MapInfo> mapinfo(new Gst::MapInfo());
         buf->map(mapinfo, Gst::MAP_WRITE);
         //std::sort(mapinfo->get_data(), mapinfo->get_data() + buf->get_size());
-        for (int i = 0; i < buf->get_size(); i++ ) mapinfo->get_data()[i] = mapinfo->get_data()[buf->get_size()-1-i];
+        int stride = buf->get_size() / 240;
+        printf ("stride %d\n", buf->get_size());
+        for (int i = stride * 200; i < 320 + stride * 200; i++ ) 
+        {
+        	mapinfo->get_data()[i] = 0;
+        }
         buf->unmap(mapinfo);
         assert(buf->gobj()->mini_object.refcount==1);
         return srcpad->push(buf);
