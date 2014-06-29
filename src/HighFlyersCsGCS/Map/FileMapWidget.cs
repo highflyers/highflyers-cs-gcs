@@ -33,9 +33,9 @@ namespace HighFlyers.GCS.Map
 		{
 			AddWaypoint (new Coordinate (1, 2));
 			AddWaypoint (new Coordinate (2, 2));
-			AddWaypoint (new Coordinate (3, 3));
+			AddWaypoint (new Coordinate (-3, -3));
 
-			SetSizeRequest(100, 100);
+			//SetSizeRequest(100, 100);
 
 			drag_position_x = 0;
 			drag_position_y = 0;
@@ -96,9 +96,6 @@ namespace HighFlyers.GCS.Map
 
 		protected override bool OnMotionNotifyEvent (EventMotion evnt)
 		{	
-			//SetPosition (end_mouse_x - mouse_x, end_mouse_y - mouse_y);		//empty for now
-			//QueueDraw ();
-
 			return true;
 		}
 
@@ -140,7 +137,6 @@ namespace HighFlyers.GCS.Map
 			end_mouse_y = 0;
 			mouse_x = 0;
 			mouse_y = 0;
-			KeepInBorders ();  //avoiding to drag to far
 			QueueDraw ();
 			return true;
 		}
@@ -162,17 +158,53 @@ namespace HighFlyers.GCS.Map
 			} 
 		}
 
+
+		private void Resize(Cairo.Context cr)
+		{
+			for (int i = 0; i < GetWaypointList().Count; ++i) 
+			{
+				Coordinate temp = GetWaypoint (i);
+				if (temp.Latitude < startPoint.Latitude || temp.Longitude < startPoint.Longitude 
+					|| temp.Latitude > stopPoint.Latitude || temp.Longitude > stopPoint.Longitude) 	//have to resize sufrace and change start and stop coordinates.
+				{
+					//Surface temporary_help;
+					//temporary_help = waypoints.CreateSimilar (Content.ColorAlpha, (int)(this.mapImage.Pixbuf.Width * 1.25), (int)(this.mapImage.Pixbuf.Height * 1.25) );
+					//waypoints.Dispose ();
+					//waypoints = temporary_help;
+
+					//double diagonal = Math.Pow ((stopPoint.Latitude - startPoint.Latitude), 2) + Math.Pow (stopPoint.Longitude - startPoint.Longitude, 2);
+					//diagonal = Math.Sqrt (diagonal);
+					//double resize_value = 0.25;
+				Coordinate test = new Coordinate (0.25 * (stopPoint.Latitude - startPoint.Latitude), 0.25 * (stopPoint.Longitude - startPoint.Longitude));
+					using (var target = cr.GetTarget ()) 
+					{
+						waypoints = target.CreateSimilar (Content.ColorAlpha, (int)(this.mapImage.Pixbuf.Width + 2*CoordinateToPixel(test).X), (int)(this.mapImage.Pixbuf.Height + 2*CoordinateToPixel(test).Y) );
+
+					}
+					startPoint.Latitude -= test.Latitude;
+					startPoint.Longitude -= test.Longitude;
+					stopPoint.Latitude += test.Latitude;
+					stopPoint.Longitude += test.Longitude;
+				}
+
+			}
+		}
+
+
 		#region Drawing
 
 		protected override bool OnDrawn (Cairo.Context cr)
 		{
-			//cr.Antialias = Antialias.Default;
-
-			cr.Scale( 5, 5);
-			Gdk.CairoHelper.SetSourcePixbuf (cr, mapImage.Pixbuf, drag_position_x/5, drag_position_y/5);			//divided by scale
+			Gdk.CairoHelper.SetSourcePixbuf (cr, mapImage.Pixbuf, drag_position_x +100 , drag_position_y +100);			//divided by scale
 			cr.Paint();
-			cr.Scale( 0.2, 0.2);
+
+			//if canvas is to small resize it
+			Resize (cr);
+
 			DrawWaypoints (cr);
+
+			//Coordinate cos = GetWaypoint(2);
+
 			return true;  
 		} 
 
@@ -183,7 +215,7 @@ namespace HighFlyers.GCS.Map
 			{
 				if (waypoints == null) 
 				{
-					waypoints = target.CreateSimilar (Content.ColorAlpha, this.mapImage.Pixbuf.Width * 5, this.mapImage.Pixbuf.Height * 5);
+					waypoints = target.CreateSimilar (Content.ColorAlpha, this.mapImage.Pixbuf.Width , this.mapImage.Pixbuf.Height );
 				}
 			}
 
