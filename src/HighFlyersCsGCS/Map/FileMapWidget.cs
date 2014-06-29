@@ -28,15 +28,10 @@ namespace HighFlyers.GCS.Map
 
 		Surface waypoints;
 
+		double offset;
 
 		public FileMapWidget () : base ()
 		{
-			AddWaypoint (new Coordinate (1, 2));
-			AddWaypoint (new Coordinate (2, 2));
-			AddWaypoint (new Coordinate (-3, -3));
-
-			//SetSizeRequest(100, 100);
-
 			drag_position_x = 0;
 			drag_position_y = 0;
 			LoadMap ("../Debug/interfaces/images/russia-map");			//temporaly
@@ -142,52 +137,33 @@ namespace HighFlyers.GCS.Map
 		}
 
 
-		private void KeepInBorders()
+		private void Resize(Cairo.Context cr)					//for now it only works for one resize (if it have to resize second time there is something wrong with coordinates)
 		{
-			if (drag_position_x > 0) {
-				drag_position_x = 0;
-			}
-			if (drag_position_y > 0) {
-				drag_position_y = 0;
-			}
-			if ((-drag_position_x) + (this.AllocatedWidth)  >  5* this.mapImage.Pixbuf.Width) {
-				drag_position_x = -(5 * this.mapImage.Pixbuf.Width - this.AllocatedWidth) ;
-			}
-			if ((-drag_position_y) + this.AllocatedHeight >  5* this.mapImage.Pixbuf.Height) {
-				drag_position_y =  -(5*  this.mapImage.Pixbuf.Height - this.AllocatedHeight);
-			} 
-		}
-
-
-		private void Resize(Cairo.Context cr)
-		{
-			for (int i = 0; i < GetWaypointList().Count; ++i) 
+			for (int i = 0; i < GetWaypointList().Count; ++i) 	//in final there should be PathPoint not Waypoint (if drone fly over map region)
 			{
 				Coordinate temp = GetWaypoint (i);
 				if (temp.Latitude < startPoint.Latitude || temp.Longitude < startPoint.Longitude 
 					|| temp.Latitude > stopPoint.Latitude || temp.Longitude > stopPoint.Longitude) 	//have to resize sufrace and change start and stop coordinates.
 				{
-					//Surface temporary_help;
-					//temporary_help = waypoints.CreateSimilar (Content.ColorAlpha, (int)(this.mapImage.Pixbuf.Width * 1.25), (int)(this.mapImage.Pixbuf.Height * 1.25) );
-					//waypoints.Dispose ();
-					//waypoints = temporary_help;
+					const double resize_value = 0.5;
+					Coordinate temp2 = new Coordinate(stopPoint.Latitude - startPoint.Latitude,stopPoint.Longitude - startPoint.Longitude);
 
-					//double diagonal = Math.Pow ((stopPoint.Latitude - startPoint.Latitude), 2) + Math.Pow (stopPoint.Longitude - startPoint.Longitude, 2);
-					//diagonal = Math.Sqrt (diagonal);
-					//double resize_value = 0.25;
-				Coordinate test = new Coordinate (0.25 * (stopPoint.Latitude - startPoint.Latitude), 0.25 * (stopPoint.Longitude - startPoint.Longitude));
+					offset = CoordinateToPixel (temp2).X * resize_value;
+
+					Coordinate test = new Coordinate (resize_value * (stopPoint.Latitude - startPoint.Latitude), resize_value * (stopPoint.Longitude - startPoint.Longitude));
 					using (var target = cr.GetTarget ()) 
 					{
-						waypoints = target.CreateSimilar (Content.ColorAlpha, (int)(this.mapImage.Pixbuf.Width + 2*CoordinateToPixel(test).X), (int)(this.mapImage.Pixbuf.Height + 2*CoordinateToPixel(test).Y) );
-
+						waypoints = target.CreateSimilar (Content.ColorAlpha, (int)(this.mapImage.Pixbuf.Width + 2*CoordinateToPixel(test).X), 
+						                                  (int)(this.mapImage.Pixbuf.Height + 2*CoordinateToPixel(test).Y) );			// there is *2 because we have to add this much to 
+																																		// to both side of map
 					}
 					startPoint.Latitude -= test.Latitude;
 					startPoint.Longitude -= test.Longitude;
 					stopPoint.Latitude += test.Latitude;
 					stopPoint.Longitude += test.Longitude;
 				}
-
 			}
+			QueueDraw ();
 		}
 
 
@@ -195,15 +171,14 @@ namespace HighFlyers.GCS.Map
 
 		protected override bool OnDrawn (Cairo.Context cr)
 		{
-			Gdk.CairoHelper.SetSourcePixbuf (cr, mapImage.Pixbuf, drag_position_x +100 , drag_position_y +100);			//divided by scale
+			double proportion = (double)this.mapImage.Pixbuf.Width / (double)this.mapImage.Pixbuf.Height;		//needed for resize
+			Gdk.CairoHelper.SetSourcePixbuf (cr, mapImage.Pixbuf, drag_position_x  +offset , drag_position_y + (offset / proportion) );			
 			cr.Paint();
 
-			//if canvas is to small resize it
+			//if canvas is too small to draw all waypoints resize it
 			Resize (cr);
-
 			DrawWaypoints (cr);
-
-			//Coordinate cos = GetWaypoint(2);
+			DrawPathPoint (cr);
 
 			return true;  
 		} 
@@ -223,7 +198,7 @@ namespace HighFlyers.GCS.Map
 			{
 				int i = 0;
 
-				cr.SetSourceSurface (waypoints, (int)drag_position_x, (int)drag_position_y);
+				cr.SetSourceSurface (waypoints, (int)(drag_position_x), (int)(drag_position_y));
 
 
 				cr_overlay.SelectFontFace ("Courier", FontSlant.Normal, FontWeight.Bold);		
@@ -252,7 +227,7 @@ namespace HighFlyers.GCS.Map
 					cords.X -= 5;				//to draw in center of circle
 					cords.Y += 4;
 					if (i >= 10) {
-						cords.X -= 4;
+						cords.X -= 4;			//if number is 2-digit diffrent center
 					}
 					cr_overlay.MoveTo (cords);
 					cr_overlay.SetSourceRGB (1.0, 1.0, 1.0);
@@ -262,9 +237,29 @@ namespace HighFlyers.GCS.Map
 				}
 
 			}
-
-
 			cr.Paint ();
+		}
+
+
+		private void DrawPathPoint(Cairo.Context cr)		//simply drawing of path with red line
+		{
+			using (Context cr_path = new Context (waypoints)) 
+			{
+				if (GetPath().Count > 1) 
+				{
+					cr_path.LineWidth = 1;
+					for(int i = 0; i < GetPath().Count-1; ++i)
+					{
+						cr_path.SetSourceRGB (1.0, 0.0, 0.0); 
+						var list = GetPath();
+						Coordinate way1 = list [i];
+						Coordinate way2 = list [i+1];
+						cr_path.MoveTo(CoordinateToPixel(way1));
+						cr_path.LineTo(CoordinateToPixel(way2));
+						cr_path.Stroke ();
+					}
+				}
+			}
 		}
 
 		#endregion
@@ -288,17 +283,17 @@ namespace HighFlyers.GCS.Map
 				startPoint.Longitude - p.X * pixPerGradX);
 		}
 
-		public override void JumpTo(Coordinate coordinate)
+		public override void JumpTo(Coordinate coordinate)		//when implemented it should be added to resize function
 		{
-
+			//TODO
 		}
 
 		public override Coordinate GetCurrentMapLocation ()
 		{
-			return new Coordinate (0, 0);
+			return new Coordinate (0, 0);	//TODO
 		}
 
-		public override bool PathPointFollowerMode{ get; set; }
+		public override bool PathPointFollowerMode{ get; set; } //TODO
 	}
 }
 
