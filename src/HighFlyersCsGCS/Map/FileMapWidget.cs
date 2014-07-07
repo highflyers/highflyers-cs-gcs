@@ -27,7 +27,6 @@ namespace HighFlyers.GCS.Map
 		private bool mapLoaded = false;
 
 		Surface waypoints;
-
 		double offset;
 
 		public FileMapWidget () : base ()
@@ -35,6 +34,8 @@ namespace HighFlyers.GCS.Map
 			drag_position_x = 0;
 			drag_position_y = 0;
 			LoadMap ("../Debug/interfaces/images/russia-map");			//temporaly
+
+
 
 			AddEvents ((int)EventMask.PointerMotionMask | (int)EventMask.ButtonPressMask
 			           | (int)EventMask.ButtonReleaseMask);
@@ -137,20 +138,21 @@ namespace HighFlyers.GCS.Map
 		}
 
 
-		private void Resize(Cairo.Context cr)					//for now it only works for one resize (if it have to resize second time there is something wrong with coordinates)
+		private void Resize(Cairo.Context cr)					//tested work fine
 		{
-			for (int i = 0; i < GetWaypointList().Count; ++i) 	//in final there should be PathPoint not Waypoint (if drone fly over map region)
+			Coordinate map_position = GetCurrentMapLocation ();
+			for (int i = 0; i < GetPath().Count; ++i) 	//it resize only on pathpoint (you can't add waypoint beyond the map and see it before it flies there)
 			{
-				Coordinate temp = GetWaypoint (i);
+				var list = GetPath();
+				Coordinate temp = list [i];
 				if (temp.Latitude < startPoint.Latitude || temp.Longitude < startPoint.Longitude 
 					|| temp.Latitude > stopPoint.Latitude || temp.Longitude > stopPoint.Longitude) 	//have to resize sufrace and change start and stop coordinates.
 				{
 					const double resize_value = 0.5;
-					Coordinate temp2 = new Coordinate(stopPoint.Latitude - startPoint.Latitude,stopPoint.Longitude - startPoint.Longitude);
-
-					offset = CoordinateToPixel (temp2).X * resize_value;
-
 					Coordinate test = new Coordinate (resize_value * (stopPoint.Latitude - startPoint.Latitude), resize_value * (stopPoint.Longitude - startPoint.Longitude));
+
+					offset = CoordinateToPixel (test).X  ;
+
 					using (var target = cr.GetTarget ()) 
 					{
 						waypoints = target.CreateSimilar (Content.ColorAlpha, (int)(this.mapImage.Pixbuf.Width + 2*CoordinateToPixel(test).X), 
@@ -163,7 +165,7 @@ namespace HighFlyers.GCS.Map
 					stopPoint.Longitude += test.Longitude;
 				}
 			}
-			QueueDraw ();
+			JumpTo (map_position);
 		}
 
 
@@ -283,17 +285,37 @@ namespace HighFlyers.GCS.Map
 				startPoint.Longitude - p.X * pixPerGradX);
 		}
 
-		public override void JumpTo(Coordinate coordinate)		//when implemented it should be added to resize function
+		public override void JumpTo(Coordinate coordinate)		//centers map on the given coordinate
 		{
-			//TODO
+			PointD temp = CoordinateToPixel (coordinate);
+			drag_position_x = -(temp.X - Window.Width / 2);
+			drag_position_y = -(temp.Y - Window.Height / 2);
+			QueueDraw ();
 		}
 
-		public override Coordinate GetCurrentMapLocation ()
+		public override Coordinate GetCurrentMapLocation ()		//gets the center of the current map location in gps coordinates
 		{
-			return new Coordinate (0, 0);	//TODO
+			int width = Window.Width;
+			int height = Window.Height;
+			PointD temp = new PointD (width / 2 - drag_position_x, height / 2 - drag_position_y);
+			Coordinate result = PixelToCoordinate (temp);
+			return result;
 		}
 
-		public override bool PathPointFollowerMode{ get; set; } //TODO
+		public override bool PathPointFollowerMode 
+		{ 
+			get{ return PathPointFollowerMode;} 
+
+			set{ this.PathPointFollowerMode = value;} 
+		} 
+
+		void OnPathpointAddedEventCalled(CoordinateEventHandler handler, CoordinateEventArgs args)
+		{
+			if (PathPointFollowerMode == true) 
+			{
+				JumpTo (args.Coordinate);
+			}
+		}
 	}
 }
 
