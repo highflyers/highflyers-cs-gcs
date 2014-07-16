@@ -1,5 +1,0 @@
-Name: Algorithms
-Description: 
-Version: 0.1
-Libs: -L"/home/loganek/Documents/highflyers-cs-gcs/src/HighFlyersCsGCS/bin/Debug" -lAlgorithms
-Cflags: -I""
