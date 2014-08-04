@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30324.0
-MinimumVisualStudioVersion = 10.0.40219.1
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HighFlyersCsGCS", "HighFlyersCsGCS\HighFlyersCsGCS.csproj", "{2AEF581B-AC28-42BC-9B85-40E2AD2385D1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "highflyers-protocol", "..\highflyers-protocol\src\highflyers-protocol\highflyers-protocol.csproj", "{EBB700AD-54C4-4AEE-90B4-A6C074617999}"
@@ -13,7 +11,7 @@ Project("{2857B73E-F847-4B02-9238-064979017E93}") = "gstreamer-plugins", "gstrea
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Algorithms", "Algorithms\Algorithms.vcxproj", "{8B7F2030-1CBC-4EEE-A583-87AFD072CAA2}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ConsoleGCS", "ConsoleGCS\ConsoleGCS.vcxproj", "{A263B2CD-88C1-4A5B-B682-41E0DB23B4AE}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ConsoleGCS", "ConsoleGCS\ConsoleGCS.vcxproj", "{D7B72947-0D76-4B3D-A1F3-E468C50AFE72}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -77,18 +75,18 @@ Global
 		{8B7F2030-1CBC-4EEE-A583-87AFD072CAA2}.Release|Win32.Build.0 = Release|Win32
 		{8B7F2030-1CBC-4EEE-A583-87AFD072CAA2}.Release|x86.ActiveCfg = Release|Win32
 		{8B7F2030-1CBC-4EEE-A583-87AFD072CAA2}.Release|x86.Build.0 = Release|Win32
-		{A263B2CD-88C1-4A5B-B682-41E0DB23B4AE}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
-		{A263B2CD-88C1-4A5B-B682-41E0DB23B4AE}.Debug|Mixed Platforms.Build.0 = Debug|Win32
-		{A263B2CD-88C1-4A5B-B682-41E0DB23B4AE}.Debug|Win32.ActiveCfg = Debug|Win32
-		{A263B2CD-88C1-4A5B-B682-41E0DB23B4AE}.Debug|Win32.Build.0 = Debug|Win32
-		{A263B2CD-88C1-4A5B-B682-41E0DB23B4AE}.Debug|x86.ActiveCfg = Debug|Win32
-		{A263B2CD-88C1-4A5B-B682-41E0DB23B4AE}.Debug|x86.Build.0 = Debug|Win32
-		{A263B2CD-88C1-4A5B-B682-41E0DB23B4AE}.Release|Mixed Platforms.ActiveCfg = Release|Win32
-		{A263B2CD-88C1-4A5B-B682-41E0DB23B4AE}.Release|Mixed Platforms.Build.0 = Release|Win32
-		{A263B2CD-88C1-4A5B-B682-41E0DB23B4AE}.Release|Win32.ActiveCfg = Release|Win32
-		{A263B2CD-88C1-4A5B-B682-41E0DB23B4AE}.Release|Win32.Build.0 = Release|Win32
-		{A263B2CD-88C1-4A5B-B682-41E0DB23B4AE}.Release|x86.ActiveCfg = Release|Win32
-		{A263B2CD-88C1-4A5B-B682-41E0DB23B4AE}.Release|x86.Build.0 = Release|Win32
+		{D7B72947-0D76-4B3D-A1F3-E468C50AFE72}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{D7B72947-0D76-4B3D-A1F3-E468C50AFE72}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{D7B72947-0D76-4B3D-A1F3-E468C50AFE72}.Debug|Win32.ActiveCfg = Debug|Win32
+		{D7B72947-0D76-4B3D-A1F3-E468C50AFE72}.Debug|Win32.Build.0 = Debug|Win32
+		{D7B72947-0D76-4B3D-A1F3-E468C50AFE72}.Debug|x86.ActiveCfg = Debug|Win32
+		{D7B72947-0D76-4B3D-A1F3-E468C50AFE72}.Debug|x86.Build.0 = Debug|Win32
+		{D7B72947-0D76-4B3D-A1F3-E468C50AFE72}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{D7B72947-0D76-4B3D-A1F3-E468C50AFE72}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{D7B72947-0D76-4B3D-A1F3-E468C50AFE72}.Release|Win32.ActiveCfg = Release|Win32
+		{D7B72947-0D76-4B3D-A1F3-E468C50AFE72}.Release|Win32.Build.0 = Release|Win32
+		{D7B72947-0D76-4B3D-A1F3-E468C50AFE72}.Release|x86.ActiveCfg = Release|Win32
+		{D7B72947-0D76-4B3D-A1F3-E468C50AFE72}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
