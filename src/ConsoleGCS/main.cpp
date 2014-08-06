@@ -1,14 +1,14 @@
-#include <stdio.h>
-#include <stdlib.h>
 #include <gst/gst.h>
-#include <gst/app/gstappsink.h>
 #include <gst/app/app.h>
 
+#include <Windows.h>
+
+#include "opencv2/core/core.hpp"
 
 
 
 
-
+using namespace std;
 
 static void on_pad_added (GstElement *element,
 						  GstPad     *pad,
@@ -21,22 +21,6 @@ static void on_pad_added (GstElement *element,
 
   gst_pad_link (pad, sinkpad);
   gst_object_unref (sinkpad);
-}
-
-
-
-static void new_buffer (GstElement *sink, gpointer data)			//simple test function
-{
-  GstBuffer *buffer;
-   
-  /* Retrieve the buffer */
-  g_signal_emit_by_name (sink, "pull-buffer", &buffer);
-  if (buffer) 
-  {
-    /* The only thing we do in this example is print a * to indicate a received buffer */
-    g_print ("*");
-    gst_buffer_unref (buffer);
-  }
 }
 
 
@@ -90,12 +74,6 @@ int main (int   argc,
   gst_element_link_many(video_queue_second, appsink, NULL);
 
  
-  //appsink configuration
-  //GstCaps * caps_app_sink;
-  //g_object_set(appsink, "emit-signals", TRUE, "caps", caps_app_sink , NULL);
-
-  g_signal_connect(appsink, "new-sample", G_CALLBACK(new_buffer), NULL); 
-
 
   tee_src_pad_template = gst_element_class_get_pad_template (GST_ELEMENT_GET_CLASS (tee), "src_%u");
   tee_video_pad = gst_element_request_pad (tee, tee_src_pad_template, NULL, NULL);
@@ -134,7 +112,11 @@ int main (int   argc,
 		  sampleBuffer = gst_sample_get_buffer(sample);
 		   if(sampleBuffer != NULL)
         {
+			GstCaps* caps_buffer = gst_app_sink_get_caps(GST_APP_SINK(appsink));
             gst_buffer_map(sampleBuffer, &bufferInfo, GST_MAP_READ);
+
+			cv::Mat image = cv::Mat();
+
 			gst_buffer_unmap(sampleBuffer, &bufferInfo);
         }
         gst_sample_unref(sample);

@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "highflyers-protocol", "..\h
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "highflyers-protocol-generator", "..\highflyers-protocol\src\highflyers-protocol-generator\highflyers-protocol-generator.csproj", "{180F8274-24C9-417E-9120-C17A0CBEF180}"
 EndProject
-Project("{2857B73E-F847-4B02-9238-064979017E93}") = "gstreamer-plugins", "gstreamer-plugins\gstreamer-plugins.cproj", "{D40BC766-C20F-499B-8686-296E467ED339}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Algorithms", "Algorithms\Algorithms.vcxproj", "{8B7F2030-1CBC-4EEE-A583-87AFD072CAA2}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ConsoleGCS", "ConsoleGCS\ConsoleGCS.vcxproj", "{D7B72947-0D76-4B3D-A1F3-E468C50AFE72}"
@@ -55,14 +53,6 @@ Global
 		{180F8274-24C9-417E-9120-C17A0CBEF180}.Release|Win32.ActiveCfg = Release|Any CPU
 		{180F8274-24C9-417E-9120-C17A0CBEF180}.Release|x86.ActiveCfg = Release|Any CPU
 		{180F8274-24C9-417E-9120-C17A0CBEF180}.Release|x86.Build.0 = Release|Any CPU
-		{D40BC766-C20F-499B-8686-296E467ED339}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{D40BC766-C20F-499B-8686-296E467ED339}.Debug|Win32.ActiveCfg = Debug|Any CPU
-		{D40BC766-C20F-499B-8686-296E467ED339}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{D40BC766-C20F-499B-8686-296E467ED339}.Debug|x86.Build.0 = Debug|Any CPU
-		{D40BC766-C20F-499B-8686-296E467ED339}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{D40BC766-C20F-499B-8686-296E467ED339}.Release|Win32.ActiveCfg = Release|Any CPU
-		{D40BC766-C20F-499B-8686-296E467ED339}.Release|x86.ActiveCfg = Release|Any CPU
-		{D40BC766-C20F-499B-8686-296E467ED339}.Release|x86.Build.0 = Release|Any CPU
 		{8B7F2030-1CBC-4EEE-A583-87AFD072CAA2}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
 		{8B7F2030-1CBC-4EEE-A583-87AFD072CAA2}.Debug|Mixed Platforms.Build.0 = Debug|Win32
 		{8B7F2030-1CBC-4EEE-A583-87AFD072CAA2}.Debug|Win32.ActiveCfg = Debug|Win32
