@@ -11,7 +11,7 @@
 class Digit_recognition
 {
 private:
-	cv::Mat *main_image, cropped_image;
+	cv::Mat main_image, cropped_image;
 	cv::Mat imageThresh_;
 	int lowH;
 	int highH;
@@ -22,6 +22,22 @@ private:
 
 	cv::Point points[4];
 	int how_many_points;
+
+public:
+	Digit_recognition()
+	{
+		lowH = 0;
+		highH = 15;
+		lowS = 10;
+		highS = 255;
+		lowV = 20;
+		highV = 255;
+		how_many_points = 0;
+	}
+
+	void Set_main_image(cv::Mat image);
+
+	cv::Mat Get_main_image();
 
 	void thresholding();
 
@@ -36,23 +52,6 @@ private:
 	bool is_pixel_set(uchar color);
 
 	int get_digit();
-
-
-public:
-	Digit_recognition()
-	{
-		int lowH = 0;
-		int highH = 15;
-		int lowS = 10;
-		int highS = 255;
-		int lowV = 20;
-		int highV = 255;
-		int how_many_points = 0;
-	}
-
-	void Set_main_image(cv::Mat* image);
-
-	int Launch();
 
 };
 

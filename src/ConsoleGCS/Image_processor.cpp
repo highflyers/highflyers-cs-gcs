@@ -3,10 +3,16 @@
 using namespace cv;
 
 
-void Digit_recognition::Set_main_image(Mat* image)
+void Digit_recognition::Set_main_image(Mat image)
 {
 	main_image = image;
 }
+
+cv::Mat Digit_recognition::Get_main_image()
+{
+	return main_image;
+}
+
 
 void Digit_recognition::thresholding()
 {
@@ -81,8 +87,8 @@ void Digit_recognition::compute()
 	}
 
 	Rect roi(xmin  , ymin , xmax - xmin , ymax - ymin );
-	cropped_image = (*main_image)(roi);
-	rectangle(*main_image, Point(xmin -2 , ymin - 2), Point(xmax + 2,ymax + 2), Scalar(0,255,255),2,8);
+	cropped_image = (main_image)(roi);
+	rectangle(main_image, Point(xmin -2 , ymin - 2), Point(xmax + 2,ymax + 2), Scalar(0,255,255),2,8);
 	//imshow("original", main_image);
 
 
@@ -94,18 +100,19 @@ void Digit_recognition::draw_points()
 	int counter = how_many_points > 4 ? 4 : how_many_points;
 	for(int i = 0; i < counter; ++i)
 	{
-		circle(*main_image, points[i], 2, Scalar(255,0,255),10,8,0);
-		circle(*main_image, points[i], 2, Scalar(255,255,0),2,8,0);
+		circle(main_image, points[i], 2, Scalar(255,0,255),10,8,0);
+		circle(main_image, points[i], 2, Scalar(255,255,0),2,8,0);
 	}
 }
 
  void Digit_recognition::CallBackFunc(int event, int xx, int yy, int flags, void* userdata)
 {
-	Digit_recognition *temp = static_cast<Digit_recognition*>(userdata);
+	//Digit_recognition *temp = static_cast<Digit_recognition*>(userdata);
+	Digit_recognition *temp = (Digit_recognition*)userdata;
 	if(event == EVENT_LBUTTONUP)
 	{
 		temp->points[temp->how_many_points % 4] = Point(xx,yy);
-		temp->how_many_points++;
+		temp->how_many_points = temp->how_many_points++;
 	}
 }
 
@@ -282,38 +289,4 @@ int Digit_recognition::get_digit()
 	
 }
 
-
-int Digit_recognition::Launch()
-{
-	int key;
-	
-	namedWindow("original", CV_WINDOW_AUTOSIZE);
-	namedWindow("Display", CV_WINDOW_AUTOSIZE);
-	setMouseCallback("original", &Digit_recognition::CallBackFunc , this);
-
-	while(1)
-	{
-		key = waitKey(10);
-		if(key == 13 || key == 10)
-		{
-			compute();
-			thresholding2();
-			//get_digit();
-			//imshow("Display", cropped_image);
-		}
-		else if(key == 32)
-			{
-				printf("%d\n", get_digit());
-			}
-			else if(key >= 0)
-				break;
-
-		compute();
-		draw_points();
-
-		imshow("original", *main_image);
-	}
-	destroyAllWindows();
-	return 0;
-}
 
