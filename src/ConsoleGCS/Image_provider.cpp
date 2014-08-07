@@ -37,13 +37,13 @@ int Image_provider::Pipeline_initialization()
 }
 
 
-void Image_provider::Setting_caps()
+void Image_provider::Setting_caps(int port, const char* ip)
 {
 	//caps for upd element
 	GstCaps *caps;
 	caps = gst_caps_new_simple("application/x-rtp", NULL);
-	g_object_set(udp, "port", 5004, NULL);
-	g_object_set(udp, "multicast-group", "192.168.1.31", NULL);
+	g_object_set(udp, "port", port, NULL);
+	g_object_set(udp, "multicast-group", ip, NULL);
 	g_object_set(udp, "caps", caps, NULL);
 	gst_caps_unref(caps); 
 

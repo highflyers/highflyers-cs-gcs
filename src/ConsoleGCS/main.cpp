@@ -16,7 +16,9 @@ int main (int   argc, char *argv[])
 	int key;
 
 	pipeline.Pipeline_initialization();
-	pipeline.Setting_caps();
+	int port = argc > 2 ? atoi(argv[2]) : 5004;
+	char* ip = argc > 2 ? argv[1] : "192.168.1.31";
+	pipeline.Setting_caps(port, ip);
 	pipeline.Linking_pipeline();
 	pipeline.Start();
 

@@ -38,7 +38,7 @@ Image_provider()
 
 int Pipeline_initialization();
 
-void Setting_caps();
+void Setting_caps(int port, const char* ip);
 
 int Linking_pipeline();
 
