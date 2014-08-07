@@ -1,20 +1,9 @@
-#include <gst/gst.h>
-#include <gst/app/app.h>
-
-#include <Windows.h>
-
-#include "opencv2/core/core.hpp"
-#include <opencv2/highgui/highgui.hpp>
-
 #include <stdio.h>
 #include <string.h>
 #include <vector>
 #include "opencv2/opencv.hpp"
 #include "defines.h"
 
-
-
-using namespace std;
 using namespace cv;
 
 Mat main_image, cropped_image;
@@ -74,6 +63,7 @@ void thresholding2()
 
 	imshow("Display", imageThresh_);
 }
+
 
 void compute()
 {
@@ -303,26 +293,26 @@ int get_digit()
 }
 
 
-int old_main_function()
+int main(int argc, char** argv)
 {
 	int key;
 
-	/*VideoCapture cap;
-	cap = VideoCapture(0);*/
+	VideoCapture cap;
+	cap = VideoCapture(0);
 
-	/*if(!cap.isOpened())
+	if(!cap.isOpened())
 	{
 		printf("Could not find the device\n");
 		return -1;
-	}*/
-	//cap >> main_image;
+	}
+	cap >> main_image;
 	namedWindow("original", CV_WINDOW_AUTOSIZE);
 	namedWindow("Display", CV_WINDOW_AUTOSIZE);
 	setMouseCallback("original", CallBackFunc, NULL);
 
 	while(1)
 	{
-		//cap >> main_image;
+		cap >> main_image;
 
 		key = waitKey(10);
 		if(key == 13 || key == 10)
@@ -347,130 +337,3 @@ int old_main_function()
 	destroyAllWindows();
 	return 0;
 }
-
-
-
-GstPad * decodebin_pad;
-
-static void on_pad_added (GstElement *element,
-						  GstPad     *pad,
-						  gpointer    data)
-{
-	GstPad *sinkpad;
-	GstElement *tee = (GstElement *) data;
-
-	sinkpad = gst_element_get_static_pad (tee, "sink");
-	decodebin_pad = pad;
-	gst_pad_link (pad, sinkpad);
-	gst_object_unref (sinkpad);
-}
-
-
-int main (int   argc,
-		  char *argv[])
-{
-	/* init GStreamer */
-	gst_init (&argc, &argv);
-
-	GstElement *udp, *rtph264depay, *decodebin,  *pipeline, *appsink;
-	GstElement *videoconvert, *videoconvert_decodebin, *caps_filter;
-
-	pipeline = gst_pipeline_new ("Video-Drone");
-	udp = gst_element_factory_make("udpsrc", "udp_source");
-	rtph264depay = gst_element_factory_make("rtph264depay", "rtph");
-	decodebin = gst_element_factory_make("decodebin", "decoder");
-	appsink  = gst_element_factory_make("appsink", "appsink");
-	videoconvert = gst_element_factory_make("videoconvert", "videoconvert");
-	videoconvert_decodebin = gst_element_factory_make("videoconvert", "videoconvert_decodbin");
-	caps_filter = gst_element_factory_make("capsfilter", "capsfilter");
-
-
-	if( !udp || !rtph264depay || !decodebin
-		|| !pipeline  || !appsink || !videoconvert || !videoconvert_decodebin || !caps_filter)
-	{
-		g_printerr ("One element could not be created. Exiting.\n");
-		return -1;
-	}
-
-	//caps for upd element
-	GstCaps *caps;
-	caps = gst_caps_new_simple("application/x-rtp", 
-		"multicast-group", G_TYPE_STRING, "192.168.1.201" ,
-		"port", G_TYPE_INT, 5004, NULL); 
-
-	g_object_set(udp, "caps", caps, NULL);
-	gst_caps_unref(caps);
-
-	//caps for videoconvert (capsfilter)
-	GstCaps *caps_decodbin;
-	caps_decodbin = gst_caps_new_simple("video/x-raw", 
-		"format", G_TYPE_STRING ,"BGR", NULL); 
-	g_object_set(caps_filter, "caps", caps_decodbin, NULL);
-	gst_caps_unref(caps_decodbin);
-
-
-	gst_bin_add_many (GST_BIN (pipeline),
-		udp, rtph264depay, decodebin,
-		appsink, videoconvert, videoconvert_decodebin, caps_filter,  NULL);
-
-
-	if( !gst_element_link_many(udp,rtph264depay,decodebin, NULL) ||
-		!gst_element_link_many(videoconvert_decodebin, caps_filter, videoconvert, appsink, NULL) )	
-	{
-		g_printerr ("Error in linking elements.\n");
-		return -1; 
-	}
-
-	g_signal_connect (decodebin, "pad-added", G_CALLBACK (on_pad_added), videoconvert_decodebin);
-
-
-	gst_element_set_state (pipeline, GST_STATE_PLAYING);		//here it start
-
-
-	GstSample * sample = NULL;
-	GstBuffer* sampleBuffer = NULL;
-	GstMapInfo bufferInfo;
-	gint width, height;
-	const GstStructure *str;
-
-	while (true)
-	{
-		sample = gst_app_sink_pull_sample(GST_APP_SINK(appsink));
-		if(sample != NULL)
-		{
-			sampleBuffer = gst_sample_get_buffer(sample);
-			if(sampleBuffer != NULL)
-			{
-				GstCaps* caps_buffer = gst_pad_query_caps(decodebin_pad, NULL);
-				gst_buffer_map(sampleBuffer, &bufferInfo, GST_MAP_READ);
-
-				str = gst_caps_get_structure (caps_buffer, 0);
-				if (!gst_structure_get_int (str, "width", &width) ||
-					!gst_structure_get_int (str, "height", &height))
-				{
-					return -1;		//error in reading caps
-				}
-
-				main_image = cv::Mat(height,width, CV_8UC3 ,bufferInfo.data);
-
-				old_main_function();
-
-
-				//namedWindow( "Display window", WINDOW_AUTOSIZE );
-				//imshow( "Display window", image );
-				//waitKey(1);
-
-				gst_buffer_unmap(sampleBuffer, &bufferInfo);
-			}
-			gst_sample_unref(sample);
-		}
-	}
-
-	gst_element_set_state (pipeline, GST_STATE_NULL);
-	gst_object_unref (GST_OBJECT (pipeline));
-
-	return 0;
-}
-
-
-
