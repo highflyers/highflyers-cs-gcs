@@ -114,6 +114,14 @@ void Digit_recognition::draw_points()
 		temp->points[temp->how_many_points % 4] = Point(xx,yy);
 		temp->how_many_points = temp->how_many_points++;
 	}
+	if(event == EVENT_RBUTTONUP)
+	{
+		for(int i = 0; i < 4; ++i)
+		{
+			temp->points[i] = Point(0,0);
+		}
+		temp->how_many_points = 0;
+	}
 }
 
 bool Digit_recognition::is_pixel_set(uchar color)
