@@ -62,10 +62,6 @@ void Digit_recognition::thresholding2()
 
 void Digit_recognition::compute()
 {
-	// find max and min coordinates
-	if(how_many_points <4)
-		return;
-	
 	int xmin = points[0].x;
 	int ymin = points[0].y;
 	int xmax = points[0].x;
@@ -297,4 +293,7 @@ int Digit_recognition::get_digit()
 	
 }
 
-
+bool Digit_recognition::can_compute() const
+{
+	return how_many_points >= 4;
+}

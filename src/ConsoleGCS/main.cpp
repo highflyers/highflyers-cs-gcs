@@ -4,6 +4,11 @@
 using namespace std;
 using namespace cv;
 
+void log (const std::string& msg)
+{
+	cout << "Log: " << msg << endl;
+}
+
 int main (int   argc, char *argv[])
 {
 	Digit_recognition digit = Digit_recognition();		//intialization of digit algorithm 
@@ -26,10 +31,15 @@ int main (int   argc, char *argv[])
 		key = waitKey(10);
 		if(key == 13 || key == 10)
 		{
-			digit.compute();
-			digit.thresholding2();
-			//get_digit();
-			//imshow("Display", cropped_image);
+			if (digit.can_compute())
+			{
+				digit.compute();
+				digit.thresholding2();
+				//get_digit();
+				//imshow("Display", cropped_image);
+			}
+			else
+				log("Cannot compute, not enough points (4 required)");
 		}
 		else if(key == 32)
 			{
@@ -43,8 +53,8 @@ int main (int   argc, char *argv[])
 
 		imshow("original", digit.Get_main_image());
 	}
-	destroyAllWindows();
 
+	destroyAllWindows();
 
 	return 0;
 }

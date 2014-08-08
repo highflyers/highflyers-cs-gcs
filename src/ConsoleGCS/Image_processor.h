@@ -53,6 +53,7 @@ public:
 
 	int get_digit();
 
+	bool can_compute() const;
 };
 
 #endif
