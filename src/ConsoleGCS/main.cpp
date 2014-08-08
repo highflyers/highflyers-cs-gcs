@@ -22,7 +22,7 @@ int main (int   argc, char *argv[])
 	setMouseCallback("original", &Digit_recognition::CallBackFunc , &digit);
 	while(1)
 	{
-		digit.Set_main_image(pipeline.Get_Image());				//get image poprawiæ ¿eby dobry obrazek zwraca³
+		digit.Set_main_image(pipeline.Get_Image());				//get image poprawiï¿½ ï¿½eby dobry obrazek zwracaï¿½
 		key = waitKey(10);
 		if(key == 13 || key == 10)
 		{
@@ -35,7 +35,7 @@ int main (int   argc, char *argv[])
 			{
 				printf("%d\n", digit.get_digit());
 			}
-			else if(key >= 0)
+			else if(key == 27)
 				break;
 
 		digit.compute();
