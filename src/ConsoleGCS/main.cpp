@@ -15,12 +15,27 @@ int main (int   argc, char *argv[])
 	Image_provider pipeline = Image_provider(argc, argv);
 	int key;
 
-	pipeline.Pipeline_initialization();
+	if (!pipeline.Pipeline_initialization())
+	{
+		log ("Cannot initialize pipeline");
+		return 0;
+	}
+
 	int port = argc > 2 ? atoi(argv[2]) : 5004;
 	const char* ip = argc > 2 ? argv[1] : "192.168.1.60";
 	pipeline.Setting_caps(port, ip);
-	pipeline.Linking_pipeline();
-	pipeline.Start();
+
+	if (!pipeline.Linking_pipeline())
+	{
+		log ("Cannot link pipeline");
+		return 0;
+	}
+
+	if (!pipeline.Start())
+	{
+		log ("Cannot start pipeline");
+		return 0;
+	}
 
 	namedWindow("original", CV_WINDOW_AUTOSIZE);
 	namedWindow("Display", CV_WINDOW_AUTOSIZE);

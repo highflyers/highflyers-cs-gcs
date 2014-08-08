@@ -16,7 +16,7 @@ void Image_provider::on_pad_added (GstElement *element,
 }
 
 
-int Image_provider::Pipeline_initialization()
+bool Image_provider::Pipeline_initialization()
 {
 	pipeline = gst_pipeline_new ("Video-Drone");
 	udp = gst_element_factory_make("udpsrc", "udp_source");
@@ -32,10 +32,10 @@ int Image_provider::Pipeline_initialization()
 		|| !pipeline  || !appsink || !videoconvert || !videoconvert_decodebin || !caps_filter)
 	{
 		g_printerr ("One element could not be created. Exiting.\n");
-		return -1;
+		return false;
 	}
 
-	return 0;
+	return true;
 }
 
 
@@ -57,7 +57,7 @@ void Image_provider::Setting_caps(int port, const char* ip)
 	gst_caps_unref(caps_decodbin);
 }
 
-int Image_provider::Linking_pipeline()
+bool Image_provider::Linking_pipeline()
 {
 	gst_bin_add_many (GST_BIN (pipeline),
 		udp, rtph264depay, decodebin,
@@ -68,17 +68,17 @@ int Image_provider::Linking_pipeline()
 		!gst_element_link_many(videoconvert_decodebin, caps_filter, videoconvert, appsink, NULL) )	
 	{
 		g_printerr ("Error in linking elements.\n");
-		return -1; 
+		return false;
 	}
 
 	g_signal_connect (decodebin, "pad-added", G_CALLBACK (on_pad_added), videoconvert_decodebin);
 
-	return 0;
+	return true;
 }
 
-void Image_provider::Start()
+bool Image_provider::Start()
 {
-	gst_element_set_state (pipeline, GST_STATE_PLAYING);
+	return gst_element_set_state (pipeline, GST_STATE_PLAYING) != GST_STATE_CHANGE_FAILURE;
 }
 
 void Image_provider::Stop()

@@ -33,13 +33,13 @@ Image_provider()
 	gst_object_unref (GST_OBJECT (pipeline));
 }
 
-int Pipeline_initialization();
+bool Pipeline_initialization();
 
 void Setting_caps(int port, const char* ip);
 
-int Linking_pipeline();
+bool Linking_pipeline();
 
-void Start();
+bool Start();
 
 void Stop();
 
