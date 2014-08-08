@@ -3,7 +3,6 @@
 
 #include <gst/gst.h>
 #include <gst/app/app.h>
-#include <Windows.h>
 #include "opencv2/core/core.hpp"
 #include <opencv2/highgui/highgui.hpp>
 
@@ -12,8 +11,6 @@ static GstPad* decodebin_pad;
 class Image_provider
 {
 public:
-	
-
 
 GstElement *udp, *rtph264depay, *decodebin,  *pipeline, *appsink;
 GstElement *videoconvert, *videoconvert_decodebin, *caps_filter;

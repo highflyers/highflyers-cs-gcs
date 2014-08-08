@@ -34,6 +34,8 @@ int Image_provider::Pipeline_initialization()
 		g_printerr ("One element could not be created. Exiting.\n");
 		return -1;
 	}
+
+	return 0;
 }
 
 
@@ -70,6 +72,8 @@ int Image_provider::Linking_pipeline()
 	}
 
 	g_signal_connect (decodebin, "pad-added", G_CALLBACK (on_pad_added), videoconvert_decodebin);
+
+	return 0;
 }
 
 void Image_provider::Start()
