@@ -112,7 +112,7 @@ void Digit_recognition::draw_points()
 	if(event == EVENT_LBUTTONUP)
 	{
 		temp->points[temp->how_many_points % 4] = Point(xx,yy);
-		temp->how_many_points = temp->how_many_points++;
+		temp->how_many_points++;
 	}
 	if(event == EVENT_RBUTTONUP)
 	{
